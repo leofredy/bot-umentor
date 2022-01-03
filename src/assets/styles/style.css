@@ -15,7 +15,10 @@ button {
   background-color: transparent;
 }
 .tonDroid {
-  position: relative;
+  position: fixed;
+  bottom: 80px;
+  z-index: 99;
+  right: 0px;
   padding: 12px;
   width: 487px;
   background-color: #121212;
