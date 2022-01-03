@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
-#appTonDoidv * {
+#appTonDoid * {
   padding: 0;
   margin: 0;
   box-sizing: content-box;
 }
-#appTonDoidv ul, li {
+#appTonDoid ul, li {
   list-style: none;
 }
-#appTonDoidv p, li, h1, h2, h3, span {
+#appTonDoid p, li, h1, h2, h3, span {
   font-family: 'Poppins', sans-serif;
 }
-#appTonDoidv button {
+#appTonDoid button {
   border: none;
   outline: none;
   background-color: transparent;
