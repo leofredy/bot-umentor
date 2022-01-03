@@ -28,7 +28,10 @@ class App {
           background-color: transparent;
         }
         .tonDroid {
-          position: relative;
+          position: fixed;
+          bottom: 80px;
+          right: 0px;
+          z-index: 99;
           padding: 12px;
           width: 487px;
           background-color: #121212;

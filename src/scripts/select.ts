@@ -41,23 +41,23 @@ class Select {
   }
 
   private toggleEvent(): void {
-    clearTimeout(this.exaustToggle);
+    // clearTimeout(this.exaustToggle);
     
     if (this.status) {
       this.selectDOM.children[1].classList.remove("show");
-      this.selectDOM.children[1].classList.add("closing");
-      this.exaustToggle = setTimeout(() => {
-        this.selectDOM.children[1].classList.remove("closing");
-      }, 900);
+      // this.selectDOM.children[1].classList.add("closing");
+      // this.exaustToggle = setTimeout(() => {
+      //   this.selectDOM.children[1].classList.remove("closing");
+      // }, 900);
 
       this.body.removeEventListener("click", this.toggleBody, false);
     } 
     else {
-      this.selectDOM.children[1].classList.remove("closing");
-      this.exaustToggle = setTimeout(() => {
+      // this.selectDOM.children[1].classList.remove("closing");
+      // this.exaustToggle = setTimeout(() => {
         this.selectDOM.children[1].classList.add("show");
-        this.body.addEventListener("click", this.toggleBody, false)
-      }, 100);
+      //   this.body.addEventListener("click", this.toggleBody, false)
+      // }, 100);
     }
 
     this.status = !this.status;
