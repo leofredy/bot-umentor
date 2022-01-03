@@ -10,8 +10,8 @@ class App {
 
   private mounted() {
     this.template = `
-      <link rel="stylesheet" href="./styles/style.css">
-      <link rel="stylesheet" href="./styles/animations.css">
+      <link rel="stylesheet" href="./assets/styles/style.css">
+      <link rel="stylesheet" href="./assets/styles/animations.css">
       <div class="tonDroid">
         <div class="tonDroid-controls">
           <button class="controls-minimize">
