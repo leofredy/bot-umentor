@@ -2,13 +2,14 @@ class Select {
   private selectDOM: HTMLElement;
   private status: boolean = false;
   private _value: string = "";
-  private valueOptions: Array<string>;
+  private optionsDOM: Array<HTMLElement>;
+  private valueOptions: Array<string> = [];
   private exaustToggle: number = 0;
   private body: HTMLElement = document.querySelector("body")!;
 
-  constructor(selectDOM: HTMLElement, values: Array<string>) {
+  constructor(selectDOM: HTMLElement) {
     this.selectDOM = selectDOM;
-    this.valueOptions = values;
+    this.optionsDOM = ([...this.selectDOM.children[1].children] as Array<HTMLElement>);
   }
 
   public get value(): string {
@@ -93,7 +94,15 @@ class Select {
     this.addEventChange();
   }
 
+  private startOptionsValues() {
+    this.optionsDOM.forEach(optionModulo => {
+      this.valueOptions.push((optionModulo.children[1] as HTMLInputElement).value);
+    });
+    console.log(this.valueOptions);
+  }
+
   startSelect() {
+    this.startOptionsValues();
     this.bindEvents();
     this.addEvents();
   }

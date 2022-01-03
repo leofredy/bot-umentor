@@ -2,10 +2,12 @@ import Select from "./scripts/select.js";
 
 class App {
   private template: string = "";
+  private listModuloDOM: Array<HTMLElement>;
   private containerApp: HTMLDivElement = document.createElement("div")!;
 
   constructor() {
     this.containerApp.setAttribute("id", "appTonDoid");
+    this.listModuloDOM = ([...document.querySelectorAll("a.list-group-item")!] as Array<HTMLElement>);
   }
 
   private mounted() {
@@ -54,24 +56,19 @@ class App {
                 </svg>
               </div>
               <ul class="select-options">
-                <li class="select-option">
-                  <p>
-                    Introdução
-                  </p>
-                  <input value="Introdução" type="text">
-                </li>
-                <li class="select-option">
-                  <p>
-                    Estrategias validas para ecommerce
-                  </p>
-                  <input value="Estrategias validas para ecommerce" type="text">
-                </li>
-                <li class="select-option">
-                  <p>
-                    Relacionamento feedback retorno
-                  </p>
-                  <input value="Relacionamento feedback retorno" type="text">
-                </li>
+                ${
+                  this.listModuloDOM.forEach((moduloDOM) => {
+                    `
+                      <li class="select-option">
+                        <p>
+                          ${moduloDOM.innerText}
+                        </p>
+                        <input value="Introdução" type="text">
+                      </li>
+                    `
+                  })
+                }
+                
                 <li class="select-option">
                   <p>
                     Todos os módulos
@@ -105,7 +102,7 @@ class App {
 
   public init() {
     this.mounted();
-    new Select(document.querySelector(".content-select")!, ["Introdução", "teste1", "teste2"]).startSelect();
+    new Select(document.querySelector(".content-select")!).startSelect();
   }
 }
 

@@ -1,11 +1,12 @@
 class Select {
-    constructor(selectDOM, values) {
+    constructor(selectDOM) {
         this.status = false;
         this._value = "";
+        this.valueOptions = [];
         this.exaustToggle = 0;
         this.body = document.querySelector("body");
         this.selectDOM = selectDOM;
-        this.valueOptions = values;
+        this.optionsDOM = [...this.selectDOM.children[1].children];
     }
     get value() {
         return this._value;
@@ -75,7 +76,14 @@ class Select {
         this.selectDOM.children[1].innerHTML = template;
         this.addEventChange();
     }
+    startOptionsValues() {
+        this.optionsDOM.forEach(optionModulo => {
+            this.valueOptions.push(optionModulo.children[1].value);
+        });
+        console.log(this.valueOptions);
+    }
     startSelect() {
+        this.startOptionsValues();
         this.bindEvents();
         this.addEvents();
     }
