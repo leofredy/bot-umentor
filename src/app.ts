@@ -8,6 +8,7 @@ class App {
   constructor() {
     this.containerApp.setAttribute("id", "appTonDoid");
     this.listModuloDOM = ([...document.querySelectorAll("a.list-group-item")!] as Array<HTMLElement>);
+    console.log("listModuloDOM", this.listModuloDOM);
   }
 
   private mounted() {

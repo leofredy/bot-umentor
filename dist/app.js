@@ -5,6 +5,7 @@ class App {
         this.containerApp = document.createElement("div");
         this.containerApp.setAttribute("id", "appTonDoid");
         this.listModuloDOM = [...document.querySelectorAll("a.list-group-item")];
+        console.log("listModuloDOM", this.listModuloDOM);
     }
     mounted() {
         var _a;
