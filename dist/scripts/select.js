@@ -83,8 +83,9 @@ class Select {
         this.addEventChange();
     }
     startOptionsValues() {
-        console.log(this.optionsDOM);
+        this.optionsDOM = [...this.selectDOM.children[1].children];
         this.optionsDOM.forEach(optionModulo => {
+            console.log(optionModulo);
             this.valueOptions.push(optionModulo.children[1].value);
         });
         console.log(this.valueOptions);
@@ -127,7 +128,6 @@ class Select {
     startSelect() {
         this.selectDOM = document.querySelector(".content-select");
         console.log(this.selectDOM);
-        this.optionsDOM = [...this.selectDOM.children[1].children];
         this.startOptionsValues();
         this.bindEvents();
         this.addEvents();
