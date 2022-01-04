@@ -118,7 +118,7 @@ class Select {
           <p>
             ${moduloDOM.innerText}
           </p>
-          <input value="Introdução" type="text">
+          <input value="${moduloDOM.innerText}" type="text">
         </li>
       `
     });
