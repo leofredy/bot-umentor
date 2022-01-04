@@ -10,6 +10,21 @@
  p, li, h1, h2, h3, span {
   font-family: 'Poppins', sans-serif;
 }
+
+#appTonDoid .select-options::-webkit-scrollbar {
+  width: 6px;               /* width of the entire scrollbar */
+}
+
+#appTonDoid .select-options::-webkit-scrollbar-track {
+  background: none;        /* color of the tracking area */
+}
+
+#appTonDoid .select-options::-webkit-scrollbar-thumb {
+  background-color: #4B4B4B;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+}
+
+
 #appTonDoid button {
   border: none;
   outline: none;
@@ -114,6 +129,8 @@
   display: none;
   width: 100%;
   max-width: 170px;
+  max-height: 110px;
+  overflow-y: auto;
   position: absolute;
   top: calc(100% + 4px);
   z-index: 1;
