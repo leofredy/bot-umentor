@@ -104,7 +104,7 @@ class Select {
   private startOptionsValues() {
     this.optionsDOM = ([...this.selectDOM.children[1].children] as Array<HTMLElement>);
     this.optionsDOM.forEach(optionModulo => {
-      console.log(optionModulo);
+      console.log("options", optionModulo);
       this.valueOptions.push((optionModulo.children[1] as HTMLInputElement).value);
     });
     console.log(this.valueOptions);
