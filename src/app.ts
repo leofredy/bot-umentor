@@ -2,13 +2,15 @@ import Select from "./scripts/select.js";
 
 class App {
   private template: string = "";
-  private listModuloDOM: Array<HTMLElement>;
   private containerApp: HTMLDivElement = document.createElement("div")!;
+  private select: Select;
+  private selectTemplate: string;
+
 
   constructor() {
     this.containerApp.setAttribute("id", "appTonDoid");
-    this.listModuloDOM = ([...document.querySelectorAll("a.list-group-item")!] as Array<HTMLElement>);
-    console.log("listModuloDOM", this.listModuloDOM);
+    this.select = new Select();
+    this.selectTemplate = this.select.template;
   }
 
   private mounted() {
@@ -47,37 +49,9 @@ class App {
             <h2 class="content-title">
               Finalizar módulos
             </h2>
-            <div class="content-select">
-              <div class="select-current">
-                <p>
-                  Selecione um módulo
-                </p>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M4.94 5.72668L8 8.78002L11.06 5.72668L12 6.66668L8 10.6667L4 6.66668L4.94 5.72668Z" fill="#89898B"/>
-                </svg>
-              </div>
-              <ul class="select-options">
-                ${
-                  this.listModuloDOM.forEach((moduloDOM) => {
-                    `
-                      <li class="select-option">
-                        <p>
-                          ${moduloDOM.innerText}
-                        </p>
-                        <input value="Introdução" type="text">
-                      </li>
-                    `
-                  })
-                }
-                
-                <li class="select-option">
-                  <p>
-                    Todos os módulos
-                  </p>
-                  <input value="Todos os módulos" type="text">
-                </li>
-              </ul>
-            </div>
+
+            ${this.selectTemplate}
+
             <div class="content-toggle">
               <input id="toggleModulos" type="checkbox">
               <label for="toggleModulos"></label>
@@ -103,11 +77,8 @@ class App {
 
   public init() {
     this.mounted();
-    new Select(document.querySelector(".content-select")!).startSelect();
+    this.select.startSelect();
   }
 }
 
 export default App;
-// export default App;
-// const select = new Select(document.querySelector(".content-select")!, ["Introdução", "teste1", "teste2"]);
-// select.start();

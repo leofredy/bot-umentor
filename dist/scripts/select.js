@@ -1,12 +1,18 @@
 class Select {
-    constructor(selectDOM) {
+    constructor() {
         this.status = false;
         this._value = "";
+        this.optionsDOM = [];
         this.valueOptions = [];
         this.exaustToggle = 0;
         this.body = document.querySelector("body");
-        this.selectDOM = selectDOM;
-        this.optionsDOM = [...this.selectDOM.children[1].children];
+        this._template = "";
+        this.selectDOM = (document.querySelector("body"));
+        this.listModuloDOM = [...document.querySelectorAll("a.list-group-item")];
+        this.mounted();
+    }
+    get template() {
+        return this._template;
     }
     get value() {
         return this._value;
@@ -82,7 +88,44 @@ class Select {
         });
         console.log(this.valueOptions);
     }
+    mounted() {
+        let optionsTemplate = ``;
+        this.listModuloDOM.forEach(moduloDOM => {
+            optionsTemplate += `
+        <li class="select-option">
+          <p>
+            ${moduloDOM.innerText}
+          </p>
+          <input value="Introdução" type="text">
+        </li>
+      `;
+        });
+        this._template += `
+      <div class="content-select">
+        <div class="select-current">
+          <p>
+            Selecione um módulo
+          </p>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4.94 5.72668L8 8.78002L11.06 5.72668L12 6.66668L8 10.6667L4 6.66668L4.94 5.72668Z" fill="#89898B"/>
+          </svg>
+        </div>
+
+        <ul class="select-options">
+          ${optionsTemplate}
+          <li class="select-option">
+            <p>
+              Todos os módulos
+            </p>
+            <input value="Todos os módulos" type="text">
+          </li>
+        </ul>
+      </div>
+    `;
+    }
     startSelect() {
+        this.selectDOM = document.querySelector(".content-select");
+        this.optionsDOM = [...this.selectDOM.children[1].children];
         this.startOptionsValues();
         this.bindEvents();
         this.addEvents();
