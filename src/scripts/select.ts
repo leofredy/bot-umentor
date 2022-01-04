@@ -102,6 +102,7 @@ class Select {
   }
 
   private startOptionsValues() {
+    console.log(this.optionsDOM)
     this.optionsDOM.forEach(optionModulo => {
       this.valueOptions.push((optionModulo.children[1] as HTMLInputElement).value);
     });
@@ -146,6 +147,7 @@ class Select {
 
   startSelect() {
     this.selectDOM = document.querySelector(".content-select")!;
+    console.log(this.selectDOM);
     this.optionsDOM = ([...this.selectDOM.children[1].children] as Array<HTMLElement>);
     this.startOptionsValues();
     this.bindEvents();
