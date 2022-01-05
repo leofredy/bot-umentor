@@ -1,5 +1,5 @@
 class Select {
-    constructor() {
+    constructor(changeListener) {
         this.status = false;
         this._value = "";
         this.optionsDOM = [];
@@ -7,6 +7,7 @@ class Select {
         this.exaustToggle = 0;
         this.body = document.querySelector("body");
         this._template = "";
+        this.changeListener = changeListener;
         this.selectDOM = (document.querySelector("body"));
         this.listModuloDOM = [...document.querySelectorAll("a.list-group-item")];
         this.mounted();
@@ -19,6 +20,7 @@ class Select {
     }
     set value(newValue) {
         this._value = newValue;
+        this.changeListener(this._value);
     }
     bindEvents() {
         this.toggleEvent = this.toggleEvent.bind(this);

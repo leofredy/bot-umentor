@@ -9,7 +9,7 @@ class App {
 
   constructor() {
     this.containerApp.setAttribute("id", "appTonDoid");
-    this.select = new Select();
+    this.select = new Select(this.changeSelect);
     this.selectTemplate = this.select.template;
   }
 
@@ -75,6 +75,31 @@ class App {
     
     this.containerApp.innerHTML = this.template;
     document.querySelector("body")?.appendChild(this.containerApp);
+  }
+
+  private makeModule() {
+
+  }
+
+  private changeSelect(value: string) {
+    console.log("changeSelect", value);
+  }
+
+  private changeTogge(event: Event) {
+    const eventTarget = (event.target as HTMLInputElement);
+  
+    if (eventTarget.checked) {
+      const toggleName = eventTarget.getAttribute("id");
+      switch(toggleName) {
+        case "toggleFazerProva": 
+          break;
+        case "toggleModulos":
+          break;
+        case "toggleCurso":
+          this.makeModule();
+          break;
+      }
+    }
   }
 
   private liberaContextMenu() {

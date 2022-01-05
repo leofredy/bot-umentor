@@ -4,7 +4,7 @@ class App {
         this.template = "";
         this.containerApp = document.createElement("div");
         this.containerApp.setAttribute("id", "appTonDoid");
-        this.select = new Select();
+        this.select = new Select(this.changeSelect);
         this.selectTemplate = this.select.template;
     }
     mounted() {
@@ -69,6 +69,26 @@ class App {
     `;
         this.containerApp.innerHTML = this.template;
         (_a = document.querySelector("body")) === null || _a === void 0 ? void 0 : _a.appendChild(this.containerApp);
+    }
+    makeModule() {
+    }
+    changeSelect(value) {
+        console.log("changeSelect", value);
+    }
+    changeTogge(event) {
+        const eventTarget = event.target;
+        if (eventTarget.checked) {
+            const toggleName = eventTarget.getAttribute("id");
+            switch (toggleName) {
+                case "toggleFazerProva":
+                    break;
+                case "toggleModulos":
+                    break;
+                case "toggleCurso":
+                    this.makeModule();
+                    break;
+            }
+        }
     }
     liberaContextMenu() {
         document.oncontextmenu = null;

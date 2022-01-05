@@ -1,3 +1,4 @@
+type listener = (value: string) => void;
 class Select {
   private selectDOM: HTMLElement;
   private status: boolean = false;
@@ -8,8 +9,10 @@ class Select {
   private body: HTMLElement = document.querySelector("body")!;
   private _template: string = "";
   private listModuloDOM: Array<HTMLElement>;
+  private changeListener: listener;
 
-  constructor() {
+  constructor(changeListener: listener) {
+    this.changeListener = changeListener;
     this.selectDOM = (document.querySelector("body")!);
     this.listModuloDOM = ([...document.querySelectorAll("a.list-group-item")!] as Array<HTMLElement>);
     this.mounted();
@@ -25,6 +28,8 @@ class Select {
 
   private set value(newValue: string) {
     this._value = newValue;
+
+    this.changeListener(this._value);
   }
 
   private bindEvents(): void {
