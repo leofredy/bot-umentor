@@ -77,6 +77,10 @@ class App {
           </div>
         </div>
         <div class="loaderTonDroid">
+          <img 
+            src="https://leofredy.github.io/bot-umentor/src/assets/gifs/loader.gif" 
+            alt="Ton Droid em trabalhando..."
+          >
         </div>
       </body>
     `;
@@ -147,7 +151,11 @@ class App {
   }
 
   private showLoading(show: boolean) {
-
+    if (show) {
+      this.loaderApp.style.display = "block";
+    } else {
+      this.loaderApp.style.display = "none";
+    }
   }
 
   public init() {

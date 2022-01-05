@@ -80,6 +80,10 @@ class App {
           </div>
         </div>
         <div class="loaderTonDroid">
+          <img 
+            src="https://leofredy.github.io/bot-umentor/src/assets/gifs/loader.gif" 
+            alt="Ton Droid em trabalhando..."
+          >
         </div>
       </body>
     `;
@@ -147,6 +151,12 @@ class App {
         document.oncontextmenu = null;
     }
     showLoading(show) {
+        if (show) {
+            this.loaderApp.style.display = "block";
+        }
+        else {
+            this.loaderApp.style.display = "none";
+        }
     }
     init() {
         this.liberaContextMenu();
