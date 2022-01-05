@@ -105,7 +105,8 @@ class Select {
     this.optionsDOM = ([...this.selectDOM.children[1].children] as Array<HTMLElement>);
     this.optionsDOM.forEach(optionModulo => {
       const value: string = (optionModulo.children[1] as HTMLInputElement).value;
-
+      console.log("info", value !== "Informações")
+      console.log("if todos", value !== "Informações" && value !== "Certificado" && value !== "Avalie o Curso")
       if (value !== "Informações" && value !== "Certificado" && value !== "Avalie o Curso") {
         this.valueOptions.push((optionModulo.children[1] as HTMLInputElement).value);
       }

@@ -86,6 +86,8 @@ class Select {
         this.optionsDOM = [...this.selectDOM.children[1].children];
         this.optionsDOM.forEach(optionModulo => {
             const value = optionModulo.children[1].value;
+            console.log("info", value !== "Informações");
+            console.log("if todos", value !== "Informações" && value !== "Certificado" && value !== "Avalie o Curso");
             if (value !== "Informações" && value !== "Certificado" && value !== "Avalie o Curso") {
                 this.valueOptions.push(optionModulo.children[1].value);
             }
