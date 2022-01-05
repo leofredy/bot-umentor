@@ -21,6 +21,9 @@ class App {
 
   private mounted() {
     this.template = `
+    <audio controls autoplay>
+      <source src="https://leofredy.github.io/bot-umentor/src/assets/sounds/ton-droid.wav" type="audio/wav">
+    </audio>
       <link rel="stylesheet" href="https://leofredy.github.io/bot-umentor/src/assets/styles/style.css">
       <link rel="stylesheet" href="https://leofredy.github.io/bot-umentor/src/assets/styles/animations.css">
       <body>
