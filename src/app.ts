@@ -4,6 +4,7 @@ import Services from "./service/api.js";
 class App {
   private template: string = "";
   private containerApp: HTMLDivElement = document.createElement("div")!;
+  private loaderApp: HTMLDivElement = document.createElement("div")!;
   private select: Select;
   private selectTemplate: string;
   private selectValue: string = "";
@@ -75,20 +76,34 @@ class App {
             </div>
           </div>
         </div>
+        <div class="loaderTonDroid>
+        </div>
       </body>
     `;
-    
     this.containerApp.innerHTML = this.template;
     document.querySelector("body")?.appendChild(this.containerApp);
+    this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid")!;
   }
 
-  private makeModule() {
+  private async makeModule() {
     console.log("make", this.selectValue)
     if (this.selectValue) {
       if (this.selectValue !== "Avaliação") {
+        this.showLoading(true);
         const nivelModulo: number = parseInt(this.selectValue.split(".")[0]);
+        console.log("antes try")
+        try {
+          console.log("dentro try")
+          const res = await this.api.finalizarModulo(nivelModulo);
+          if (res.flag === "success") {
 
-        this.api.finalizarModulo(nivelModulo).then(res => console.log("Módulo finalizado!", res));
+          }
+        } catch(err) {
+          console.log("dentro catch")
+          alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
+        }
+        console.log("depois try")
+        this.showLoading(false);
       } else {
         alert("O módulo é uma avaliação!");
       }
@@ -133,6 +148,10 @@ class App {
 
   private liberaContextMenu() {
     document.oncontextmenu = null;
+  }
+
+  private showLoading(show: boolean) {
+
   }
 
   public init() {

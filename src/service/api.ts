@@ -1,3 +1,6 @@
+type response = {
+  flag: string
+}
 class Services {
   private url_base: string = "https://painel.umentor.com.br/painel_candidato/";
   private indice: number;
@@ -12,7 +15,7 @@ class Services {
     this.codigo_trilha = codigo_trilha;
   }
 
-  public finalizarModulo(nivelModulo: number) {
+  public finalizarModulo(nivelModulo: number): Promise<response> {
     return new Promise(resolve => {
       $.post(
         `${this.url_base}videos_aulas/controle_cursos`, {
@@ -20,7 +23,7 @@ class Services {
         curso: this.curso,
         operacao: this.operacao,
         codigo_trilha: this.codigo_trilha
-      }, function (results) {
+      }, function (results: response) {
         const params = $.parseJSON(results);
         resolve(params);
       });

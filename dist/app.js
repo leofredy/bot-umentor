@@ -1,9 +1,19 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import Select from "./scripts/select.js";
 import Services from "./service/api.js";
 class App {
     constructor(indice, curso, operacao, codigo_trilha) {
         this.template = "";
         this.containerApp = document.createElement("div");
+        this.loaderApp = document.createElement("div");
         this.selectValue = "";
         this.bindEvents();
         this.api = new Services(indice, curso, operacao, codigo_trilha);
@@ -69,26 +79,44 @@ class App {
             </div>
           </div>
         </div>
+        <div class="loaderTonDroid>
+        </div>
       </body>
     `;
         this.containerApp.innerHTML = this.template;
         (_a = document.querySelector("body")) === null || _a === void 0 ? void 0 : _a.appendChild(this.containerApp);
+        this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid");
     }
     makeModule() {
-        console.log("make", this.selectValue);
-        if (this.selectValue) {
-            if (this.selectValue !== "Avaliação") {
-                const nivelModulo = parseInt(this.selectValue.split(".")[0]);
-                this.api.finalizarModulo(nivelModulo).then(res => console.log("Módulo finalizado!", res));
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("make", this.selectValue);
+            if (this.selectValue) {
+                if (this.selectValue !== "Avaliação") {
+                    this.showLoading(true);
+                    const nivelModulo = parseInt(this.selectValue.split(".")[0]);
+                    console.log("antes try");
+                    try {
+                        console.log("dentro try");
+                        const res = yield this.api.finalizarModulo(nivelModulo);
+                        if (res.flag === "success") {
+                        }
+                    }
+                    catch (err) {
+                        console.log("dentro catch");
+                        alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
+                    }
+                    console.log("depois try");
+                    this.showLoading(false);
+                }
+                else {
+                    alert("O módulo é uma avaliação!");
+                }
             }
             else {
-                alert("O módulo é uma avaliação!");
+                // alert("Selecione um módulo!");
+                console.log("Selecione um módulo!");
             }
-        }
-        else {
-            // alert("Selecione um módulo!");
-            console.log("Selecione um módulo!");
-        }
+        });
     }
     selectChange(value) {
         this.selectValue = value;
@@ -121,6 +149,8 @@ class App {
     }
     liberaContextMenu() {
         document.oncontextmenu = null;
+    }
+    showLoading(show) {
     }
     init() {
         this.liberaContextMenu();
