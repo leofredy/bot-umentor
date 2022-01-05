@@ -1,4 +1,3 @@
-"use strict";
 class Services {
     constructor(indice, curso, operacao, codigo_trilha) {
         this.url_base = "https://painel.umentor.com.br/painel_candidato/";
@@ -21,3 +20,4 @@ class Services {
         });
     }
 }
+export default Services;

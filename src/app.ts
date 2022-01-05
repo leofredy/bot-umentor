@@ -1,15 +1,19 @@
 import Select from "./scripts/select.js";
+import Services from "./service/api";
 
 class App {
   private template: string = "";
   private containerApp: HTMLDivElement = document.createElement("div")!;
   private select: Select;
   private selectTemplate: string;
+  private selectValue: string = "";
+  private api: Services;
 
 
-  constructor() {
+  constructor(indice:number, curso:number, operacao:number, codigo_trilha:number) {
+    this.api = new Services(indice, curso, operacao, codigo_trilha);
     this.containerApp.setAttribute("id", "appTonDoid");
-    this.select = new Select(this.changeSelect);
+    this.select = new Select(this.selectChange);
     this.selectTemplate = this.select.template;
   }
 
@@ -78,14 +82,24 @@ class App {
   }
 
   private makeModule() {
+    if (this.selectValue) {
+      if (this.selectValue !== "Avaliação") {
+        const nivelModulo: number = parseInt(this.selectValue.split(".")[0]);
 
+        this.api.finalizarModulo(nivelModulo).then(res => console.log("Módulo finalizado!", res));
+      } else {
+        alert("O módulo é uma avaliação!");
+      }
+    } else {
+      alert("Selecione um módulo!");
+    }
   }
 
-  private changeSelect(value: string) {
-    console.log("changeSelect", value);
+  private selectChange(value: string) {
+    this.selectValue = value;
   }
 
-  private changeTogge(event: Event) {
+  private changeToggle(event: Event) {
     const eventTarget = (event.target as HTMLInputElement);
   
     if (eventTarget.checked) {
