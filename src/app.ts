@@ -89,7 +89,9 @@ class App {
     `;
     this.containerApp.innerHTML = this.template;
     document.querySelector("body")?.appendChild(this.containerApp);
-    (document.querySelector("#audioTonDroid")! as HTMLVideoElement).play();
+    const videoDOM = (document.querySelector("#audioTonDroid") as HTMLVideoElement);
+    console.log(videoDOM);
+    videoDOM.play();
     this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid")!;
   }
 
