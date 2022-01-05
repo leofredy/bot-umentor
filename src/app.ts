@@ -77,9 +77,14 @@ class App {
     document.querySelector("body")?.appendChild(this.containerApp);
   }
 
+  private liberaContextMenu() {
+    document.oncontextmenu = null;
+  }
+
   public init() {
     this.mounted();
     this.select.startSelect();
+    this.liberaContextMenu();
   }
 }
 

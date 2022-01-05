@@ -70,9 +70,13 @@ class App {
         this.containerApp.innerHTML = this.template;
         (_a = document.querySelector("body")) === null || _a === void 0 ? void 0 : _a.appendChild(this.containerApp);
     }
+    liberaContextMenu() {
+        document.oncontextmenu = null;
+    }
     init() {
         this.mounted();
         this.select.startSelect();
+        this.liberaContextMenu();
     }
 }
 export default App;
