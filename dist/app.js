@@ -1,5 +1,5 @@
 import Select from "./scripts/select.js";
-import Services from "./service/api";
+import Services from "./service/api.js";
 class App {
     constructor(indice, curso, operacao, codigo_trilha) {
         this.template = "";

@@ -1,5 +1,5 @@
 import Select from "./scripts/select.js";
-import Services from "./service/api";
+import Services from "./service/api.js";
 
 class App {
   private template: string = "";
