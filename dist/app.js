@@ -98,20 +98,31 @@ class App {
                 case "toggleFazerProva":
                     break;
                 case "toggleModulos":
+                    this.makeModule();
                     break;
                 case "toggleCurso":
-                    this.makeModule();
                     break;
             }
         }
+    }
+    bindEvents() {
+        this.changeToggle = this.changeToggle.bind(this);
+    }
+    addEvents() {
+        var _a, _b, _c;
+        (_a = document.querySelector("#toggleFazerProva")) === null || _a === void 0 ? void 0 : _a.addEventListener("change", event => this.changeToggle(event));
+        (_b = document.querySelector("#toggleModulos")) === null || _b === void 0 ? void 0 : _b.addEventListener("change", event => this.changeToggle(event));
+        (_c = document.querySelector("#toggleCurso")) === null || _c === void 0 ? void 0 : _c.addEventListener("change", event => this.changeToggle(event));
     }
     liberaContextMenu() {
         document.oncontextmenu = null;
     }
     init() {
+        this.liberaContextMenu();
         this.mounted();
         this.select.startSelect();
-        this.liberaContextMenu();
+        this.bindEvents();
+        this.addEvents();
     }
 }
 export default App;

@@ -108,12 +108,22 @@ class App {
         case "toggleFazerProva": 
           break;
         case "toggleModulos":
+          this.makeModule();
           break;
         case "toggleCurso":
-          this.makeModule();
           break;
       }
     }
+  }
+  
+  private bindEvents() {
+    this.changeToggle = this.changeToggle.bind(this);
+  }
+
+  private addEvents() {
+    document.querySelector("#toggleFazerProva")?.addEventListener("change", event => this.changeToggle(event));
+    document.querySelector("#toggleModulos")?.addEventListener("change", event => this.changeToggle(event));
+    document.querySelector("#toggleCurso")?.addEventListener("change", event => this.changeToggle(event));
   }
 
   private liberaContextMenu() {
@@ -121,9 +131,11 @@ class App {
   }
 
   public init() {
+    this.liberaContextMenu();
     this.mounted();
     this.select.startSelect();
-    this.liberaContextMenu();
+    this.bindEvents();
+    this.addEvents();
   }
 }
 
