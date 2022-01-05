@@ -91,14 +91,14 @@ class Select {
     mounted() {
         let optionsTemplate = ``;
         this.listModuloDOM.forEach(moduloDOM => {
-            const value = moduloDOM.innerText;
-            if (value !== "Informações" && value !== "Certificado" && value !== "Avalie o Curso") {
+            const text = moduloDOM.innerText;
+            if (text !== "Informações" && text !== "Certificado" && text !== "Avalie o Curso") {
                 optionsTemplate += `
           <li class="select-option">
             <p>
-              ${moduloDOM.innerText}
+              ${text}
             </p>
-            <input value="${moduloDOM.innerText}" type="text">
+            <input value="${text}" type="text">
           </li>
         `;
             }
