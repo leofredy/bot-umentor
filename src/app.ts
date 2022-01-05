@@ -11,6 +11,7 @@ class App {
 
 
   constructor(indice:number, curso:number, operacao:number, codigo_trilha:number) {
+    this.bindEvents();
     this.api = new Services(indice, curso, operacao, codigo_trilha);
     this.containerApp.setAttribute("id", "appTonDoid");
     this.select = new Select(this.selectChange);
@@ -92,7 +93,8 @@ class App {
         alert("O módulo é uma avaliação!");
       }
     } else {
-      alert("Selecione um módulo!");
+      // alert("Selecione um módulo!");
+      console.log("Selecione um módulo!");
     }
   }
 
@@ -119,6 +121,7 @@ class App {
   }
   
   private bindEvents() {
+    this.selectChange = this.selectChange.bind(this);
     this.changeToggle = this.changeToggle.bind(this);
   }
 
@@ -136,7 +139,6 @@ class App {
     this.liberaContextMenu();
     this.mounted();
     this.select.startSelect();
-    this.bindEvents();
     this.addEvents();
   }
 }

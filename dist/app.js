@@ -5,6 +5,7 @@ class App {
         this.template = "";
         this.containerApp = document.createElement("div");
         this.selectValue = "";
+        this.bindEvents();
         this.api = new Services(indice, curso, operacao, codigo_trilha);
         this.containerApp.setAttribute("id", "appTonDoid");
         this.select = new Select(this.selectChange);
@@ -85,7 +86,8 @@ class App {
             }
         }
         else {
-            alert("Selecione um módulo!");
+            // alert("Selecione um módulo!");
+            console.log("Selecione um módulo!");
         }
     }
     selectChange(value) {
@@ -108,6 +110,7 @@ class App {
         }
     }
     bindEvents() {
+        this.selectChange = this.selectChange.bind(this);
         this.changeToggle = this.changeToggle.bind(this);
     }
     addEvents() {
@@ -123,7 +126,6 @@ class App {
         this.liberaContextMenu();
         this.mounted();
         this.select.startSelect();
-        this.bindEvents();
         this.addEvents();
     }
 }
