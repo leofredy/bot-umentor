@@ -19,7 +19,7 @@ class Services {
     return new Promise(resolve => {
       $.post(
         `${this.url_base}videos_aulas/controle_cursos`, {
-        indice: this.indice + nivelModulo,
+        indice: this.indice + (nivelModulo > 0 ? nivelModulo - 1: 0),
         curso: this.curso,
         operacao: this.operacao,
         codigo_trilha: this.codigo_trilha
