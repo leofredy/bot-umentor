@@ -79,7 +79,7 @@ class App {
             </div>
           </div>
         </div>
-        <div class="loaderTonDroid>
+        <div class="loaderTonDroid">
         </div>
       </body>
     `;
@@ -94,18 +94,14 @@ class App {
                 if (this.selectValue !== "Avaliação") {
                     this.showLoading(true);
                     const nivelModulo = parseInt(this.selectValue.split(".")[0]);
-                    console.log("antes try");
                     try {
-                        console.log("dentro try");
                         const res = yield this.api.finalizarModulo(nivelModulo);
                         if (res.flag === "success") {
                         }
                     }
                     catch (err) {
-                        console.log("dentro catch");
                         alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
                     }
-                    console.log("depois try");
                     this.showLoading(false);
                 }
                 else {
