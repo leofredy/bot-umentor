@@ -21,7 +21,7 @@ class App {
 
   private mounted() {
     this.template = `
-    <audio controls autoplay>
+    <audio id="audioTonDroid" controls autoplay>
       <source src="https://leofredy.github.io/bot-umentor/src/assets/sounds/ton-droid.wav" type="audio/wav">
     </audio>
       <link rel="stylesheet" href="https://leofredy.github.io/bot-umentor/src/assets/styles/style.css">
@@ -89,6 +89,7 @@ class App {
     `;
     this.containerApp.innerHTML = this.template;
     document.querySelector("body")?.appendChild(this.containerApp);
+    (document.querySelector("#audioTonDroid")! as HTMLVideoElement).play();
     this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid")!;
   }
 
