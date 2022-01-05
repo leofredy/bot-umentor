@@ -172,6 +172,8 @@
 }
 #appTonDoid .loaderTonDroid {
   display: none;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -179,4 +181,7 @@
   right: 0;
   z-index: 99;
   background-color: rgba(0,0,0,0.4);
+}
+#appTonDoid .loaderTonDroid img {
+  width: 120px;
 }

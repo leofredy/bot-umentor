@@ -152,7 +152,7 @@ class App {
 
   private showLoading(show: boolean) {
     if (show) {
-      this.loaderApp.style.display = "block";
+      this.loaderApp.style.display = "flex";
     } else {
       this.loaderApp.style.display = "none";
     }
