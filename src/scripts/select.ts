@@ -104,10 +104,12 @@ class Select {
   private startOptionsValues() {
     this.optionsDOM = ([...this.selectDOM.children[1].children] as Array<HTMLElement>);
     this.optionsDOM.forEach(optionModulo => {
-      console.log("options", optionModulo);
-      this.valueOptions.push((optionModulo.children[1] as HTMLInputElement).value);
+      const value: string = (optionModulo.children[1] as HTMLInputElement).value;
+
+      if (value !== "Informações" && value !== "Certificado" && value !== "Avalie o Curso") {
+        this.valueOptions.push((optionModulo.children[1] as HTMLInputElement).value);
+      }
     });
-    console.log(this.valueOptions);
   }
 
   private mounted() { 
@@ -148,7 +150,6 @@ class Select {
 
   startSelect() {
     this.selectDOM = document.querySelector(".content-select")!;
-    console.log(this.selectDOM);
     this.startOptionsValues();
     this.bindEvents();
     this.addEvents();

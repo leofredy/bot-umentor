@@ -85,10 +85,11 @@ class Select {
     startOptionsValues() {
         this.optionsDOM = [...this.selectDOM.children[1].children];
         this.optionsDOM.forEach(optionModulo => {
-            console.log("options", optionModulo);
-            this.valueOptions.push(optionModulo.children[1].value);
+            const value = optionModulo.children[1].value;
+            if (value !== "Informações" && value !== "Certificado" && value !== "Avalie o Curso") {
+                this.valueOptions.push(optionModulo.children[1].value);
+            }
         });
-        console.log(this.valueOptions);
     }
     mounted() {
         let optionsTemplate = ``;
@@ -127,7 +128,6 @@ class Select {
     }
     startSelect() {
         this.selectDOM = document.querySelector(".content-select");
-        console.log(this.selectDOM);
         this.startOptionsValues();
         this.bindEvents();
         this.addEvents();
