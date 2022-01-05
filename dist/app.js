@@ -126,7 +126,7 @@ class App {
     }
     selectChange(value) {
         this.selectValue = value;
-        console.log("selectChange", this.selectValue);
+        console.log("selectChange", this.selectValue, "options:", this.select.valueOptions);
     }
     changeToggle(event) {
         const eventTarget = event.target;

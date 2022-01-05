@@ -3,7 +3,7 @@ class Select {
         this.status = false;
         this._value = "";
         this.optionsDOM = [];
-        this.valueOptions = [];
+        this._valueOptions = [];
         this.exaustToggle = 0;
         this.body = document.querySelector("body");
         this._template = "";
@@ -21,6 +21,12 @@ class Select {
     set value(newValue) {
         this._value = newValue;
         this.changeListener(this._value);
+    }
+    get valueOptions() {
+        return this._valueOptions;
+    }
+    set valueOptions(newValue) {
+        this._valueOptions = newValue;
     }
     bindEvents() {
         this.toggleEvent = this.toggleEvent.bind(this);
@@ -85,10 +91,12 @@ class Select {
         this.addEventChange();
     }
     startOptionsValues() {
+        const valueOptions = [];
         this.optionsDOM = [...this.selectDOM.children[1].children];
         this.optionsDOM.forEach(optionModulo => {
-            this.valueOptions.push(optionModulo.children[1].value);
+            valueOptions.push(optionModulo.children[1].value);
         });
+        this.valueOptions = valueOptions;
     }
     mounted() {
         let optionsTemplate = ``;

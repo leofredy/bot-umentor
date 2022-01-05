@@ -121,7 +121,7 @@ class App {
 
   private selectChange(value: string) {
     this.selectValue = value;
-    console.log("selectChange", this.selectValue)
+    console.log("selectChange", this.selectValue, "options:", this.select.valueOptions)
   }
 
   private changeToggle(event: Event) {

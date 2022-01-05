@@ -185,3 +185,6 @@
 #appTonDoid .loaderTonDroid img {
   width: 120px;
 }
+#appTonDoid #audioTonDroid {
+  display: none;
+}

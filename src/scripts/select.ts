@@ -4,7 +4,7 @@ class Select {
   private status: boolean = false;
   private _value: string = "";
   private optionsDOM: Array<HTMLElement> = [];
-  private valueOptions: Array<string> = [];
+  private _valueOptions: Array<string> = [];
   private exaustToggle: number = 0;
   private body: HTMLElement = document.querySelector("body")!;
   private _template: string = "";
@@ -30,6 +30,14 @@ class Select {
     this._value = newValue;
 
     this.changeListener(this._value);
+  }
+
+  public get valueOptions() {
+    return this._valueOptions;
+  }
+
+  private set valueOptions(newValue: Array<string>) {
+    this._valueOptions = newValue;
   }
 
   private bindEvents(): void {
@@ -107,10 +115,12 @@ class Select {
   }
 
   private startOptionsValues() {
+    const valueOptions: Array<string> = [];
     this.optionsDOM = ([...this.selectDOM.children[1].children] as Array<HTMLElement>);
     this.optionsDOM.forEach(optionModulo => {
-      this.valueOptions.push((optionModulo.children[1] as HTMLInputElement).value);
+      valueOptions.push((optionModulo.children[1] as HTMLInputElement).value);
     });
+    this.valueOptions = valueOptions;
   }
 
   private mounted() { 
