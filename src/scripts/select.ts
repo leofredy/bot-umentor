@@ -104,26 +104,24 @@ class Select {
   private startOptionsValues() {
     this.optionsDOM = ([...this.selectDOM.children[1].children] as Array<HTMLElement>);
     this.optionsDOM.forEach(optionModulo => {
-      const value: string = (optionModulo.children[1] as HTMLInputElement).value;
-      console.log("info", value !== "Informações")
-      console.log("if todos", value !== "Informações" && value !== "Certificado" && value !== "Avalie o Curso")
-      if (value !== "Informações" && value !== "Certificado" && value !== "Avalie o Curso") {
-        this.valueOptions.push((optionModulo.children[1] as HTMLInputElement).value);
-      }
+      this.valueOptions.push((optionModulo.children[1] as HTMLInputElement).value);
     });
   }
 
   private mounted() { 
     let optionsTemplate: string = ``;
     this.listModuloDOM.forEach(moduloDOM => {
-      optionsTemplate += `
-        <li class="select-option">
-          <p>
-            ${moduloDOM.innerText}
-          </p>
-          <input value="${moduloDOM.innerText}" type="text">
-        </li>
-      `
+      const value: string = moduloDOM.innerText;
+      if (value !== "Informações" && value !== "Certificado" && value !== "Avalie o Curso") {
+        optionsTemplate += `
+          <li class="select-option">
+            <p>
+              ${moduloDOM.innerText}
+            </p>
+            <input value="${moduloDOM.innerText}" type="text">
+          </li>
+        `;
+      }
     });
     this._template += `
       <div class="content-select">

@@ -85,25 +85,23 @@ class Select {
     startOptionsValues() {
         this.optionsDOM = [...this.selectDOM.children[1].children];
         this.optionsDOM.forEach(optionModulo => {
-            const value = optionModulo.children[1].value;
-            console.log("info", value !== "Informações");
-            console.log("if todos", value !== "Informações" && value !== "Certificado" && value !== "Avalie o Curso");
-            if (value !== "Informações" && value !== "Certificado" && value !== "Avalie o Curso") {
-                this.valueOptions.push(optionModulo.children[1].value);
-            }
+            this.valueOptions.push(optionModulo.children[1].value);
         });
     }
     mounted() {
         let optionsTemplate = ``;
         this.listModuloDOM.forEach(moduloDOM => {
-            optionsTemplate += `
-        <li class="select-option">
-          <p>
-            ${moduloDOM.innerText}
-          </p>
-          <input value="${moduloDOM.innerText}" type="text">
-        </li>
-      `;
+            const value = moduloDOM.innerText;
+            if (value !== "Informações" && value !== "Certificado" && value !== "Avalie o Curso") {
+                optionsTemplate += `
+          <li class="select-option">
+            <p>
+              ${moduloDOM.innerText}
+            </p>
+            <input value="${moduloDOM.innerText}" type="text">
+          </li>
+        `;
+            }
         });
         this._template += `
       <div class="content-select">
