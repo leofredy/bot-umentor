@@ -82,6 +82,7 @@ class App {
   }
 
   private makeModule() {
+    console.log("make", this.selectValue)
     if (this.selectValue) {
       if (this.selectValue !== "Avaliação") {
         const nivelModulo: number = parseInt(this.selectValue.split(".")[0]);
@@ -97,6 +98,7 @@ class App {
 
   private selectChange(value: string) {
     this.selectValue = value;
+    console.log("selectChange", this.selectValue)
   }
 
   private changeToggle(event: Event) {

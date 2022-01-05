@@ -74,6 +74,7 @@ class App {
         (_a = document.querySelector("body")) === null || _a === void 0 ? void 0 : _a.appendChild(this.containerApp);
     }
     makeModule() {
+        console.log("make", this.selectValue);
         if (this.selectValue) {
             if (this.selectValue !== "Avaliação") {
                 const nivelModulo = parseInt(this.selectValue.split(".")[0]);
@@ -89,6 +90,7 @@ class App {
     }
     selectChange(value) {
         this.selectValue = value;
+        console.log("selectChange", this.selectValue);
     }
     changeToggle(event) {
         const eventTarget = event.target;
