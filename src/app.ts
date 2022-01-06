@@ -90,22 +90,21 @@ class App {
     this.containerApp.innerHTML = this.template;
     document.querySelector("body")?.appendChild(this.containerApp);
     const videoDOM = (document.querySelector("#audioTonDroid") as HTMLVideoElement);
-    console.log(videoDOM);
     videoDOM.play();
     this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid")!;
   }
 
+  private getNivelModulo() {
+    console.log(this.select.valueOptions);
+  }
+
   private async makeModule() {
-    console.log("make", this.selectValue)
     if (this.selectValue) {
       if (this.selectValue !== "Avaliação") {
         this.showLoading(true);
         const nivelModulo: number = parseInt(this.selectValue.split(".")[0]);
         try {
-          const res = await this.api.finalizarModulo(nivelModulo);
-          if (res.flag === "success") {
-
-          }
+          await this.api.finalizarModulo(nivelModulo);
         } catch(err) {
           alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
         }
@@ -114,14 +113,12 @@ class App {
         alert("O módulo é uma avaliação!");
       }
     } else {
-      // alert("Selecione um módulo!");
-      console.log("Selecione um módulo!");
+      alert("Selecione um módulo!");
     }
   }
 
   private selectChange(value: string) {
     this.selectValue = value;
-    console.log("selectChange", this.selectValue, "options:", this.select.valueOptions)
   }
 
   private changeToggle(event: Event) {

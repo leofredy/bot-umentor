@@ -93,21 +93,20 @@ class App {
         this.containerApp.innerHTML = this.template;
         (_a = document.querySelector("body")) === null || _a === void 0 ? void 0 : _a.appendChild(this.containerApp);
         const videoDOM = document.querySelector("#audioTonDroid");
-        console.log(videoDOM);
         videoDOM.play();
         this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid");
     }
+    getNivelModulo() {
+        console.log(this.select.valueOptions);
+    }
     makeModule() {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("make", this.selectValue);
             if (this.selectValue) {
                 if (this.selectValue !== "Avaliação") {
                     this.showLoading(true);
                     const nivelModulo = parseInt(this.selectValue.split(".")[0]);
                     try {
-                        const res = yield this.api.finalizarModulo(nivelModulo);
-                        if (res.flag === "success") {
-                        }
+                        yield this.api.finalizarModulo(nivelModulo);
                     }
                     catch (err) {
                         alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
@@ -119,14 +118,12 @@ class App {
                 }
             }
             else {
-                // alert("Selecione um módulo!");
-                console.log("Selecione um módulo!");
+                alert("Selecione um módulo!");
             }
         });
     }
     selectChange(value) {
         this.selectValue = value;
-        console.log("selectChange", this.selectValue, "options:", this.select.valueOptions);
     }
     changeToggle(event) {
         const eventTarget = event.target;
