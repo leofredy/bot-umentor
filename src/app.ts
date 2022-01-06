@@ -94,16 +94,15 @@ class App {
     this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid")!;
   }
 
-  private getNivelModulo() {
-    console.log(this.select.valueOptions);
+  private getNivelModulo(value: string) {
+    return this.select.valueOptions.indexOf(value) + 1; 
   }
 
   private async makeModule() {
-    this.getNivelModulo();
     if (this.selectValue) {
       if (this.selectValue !== "Avaliação") {
         this.showLoading(true);
-        const nivelModulo: number = parseInt(this.selectValue.split(".")[0]);
+        const nivelModulo: number = this.getNivelModulo(this.selectValue);
         try {
           await this.api.finalizarModulo(nivelModulo);
         } catch(err) {
