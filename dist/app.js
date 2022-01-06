@@ -105,7 +105,7 @@ class App {
             .children[1]
             .setAttribute("class", "m-l-5 justify-content-end align-self-center fa fa-check-circle text-success");
     }
-    makeModule() {
+    makeModule(eventTarget) {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.selectValue) {
                 if (this.selectValue !== "Avaliação") {
@@ -127,6 +127,7 @@ class App {
             else {
                 alert("Selecione um módulo!");
             }
+            eventTarget.checked = false;
         });
     }
     selectChange(value) {
@@ -140,7 +141,7 @@ class App {
                 case "toggleFazerProva":
                     break;
                 case "toggleModulos":
-                    this.makeModule();
+                    this.makeModule(eventTarget);
                     break;
                 case "toggleCurso":
                     break;

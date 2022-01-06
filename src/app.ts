@@ -105,7 +105,7 @@ class App {
       .setAttribute("class", "m-l-5 justify-content-end align-self-center fa fa-check-circle text-success");
   }
 
-  private async makeModule() {
+  private async makeModule(eventTarget: HTMLInputElement) {
     if (this.selectValue) {
       if (this.selectValue !== "Avaliação") {
         this.showLoading(true);
@@ -123,6 +123,8 @@ class App {
     } else {
       alert("Selecione um módulo!");
     }
+
+    eventTarget.checked = false;
   }
 
   private selectChange(value: string) {
@@ -138,7 +140,7 @@ class App {
         case "toggleFazerProva": 
           break;
         case "toggleModulos":
-          this.makeModule();
+          this.makeModule(eventTarget);
           break;
         case "toggleCurso":
           break;
