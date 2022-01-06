@@ -2,7 +2,7 @@ class Select {
     constructor(changeListener) {
         this.status = false;
         this._value = "";
-        this.optionsDOM = [];
+        this._optionsDOM = [];
         this._valueOptions = [];
         this.exaustToggle = 0;
         this.body = document.querySelector("body");
@@ -11,6 +11,12 @@ class Select {
         this.selectDOM = (document.querySelector("body"));
         this.listModuloDOM = [...document.querySelectorAll("a.list-group-item")];
         this.mounted();
+    }
+    get optionsDOM() {
+        return this._optionsDOM;
+    }
+    set optionsDOM(newsOptions) {
+        this._optionsDOM = newsOptions;
     }
     get template() {
         return this._template;

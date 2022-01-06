@@ -3,7 +3,7 @@ class Select {
   private selectDOM: HTMLElement;
   private status: boolean = false;
   private _value: string = "";
-  private optionsDOM: Array<HTMLElement> = [];
+  private _optionsDOM: Array<HTMLElement> = [];
   private _valueOptions: Array<string> = [];
   private exaustToggle: number = 0;
   private body: HTMLElement = document.querySelector("body")!;
@@ -16,6 +16,14 @@ class Select {
     this.selectDOM = (document.querySelector("body")!);
     this.listModuloDOM = ([...document.querySelectorAll("a.list-group-item")!] as Array<HTMLElement>);
     this.mounted();
+  }
+
+  public get optionsDOM() {
+    return this._optionsDOM;
+  }
+
+  private set optionsDOM(newsOptions: Array<HTMLElement>) {
+    this._optionsDOM = newsOptions;
   }
 
   public get template(): string {

@@ -99,6 +99,12 @@ class App {
     getNivelModulo(value) {
         return this.select.valueOptions.indexOf(value) + 1;
     }
+    addCheckModulo(nivelModulo) {
+        this.select.optionsDOM[nivelModulo - 1]
+            .children[0]
+            .children[1]
+            .setAttribute("class", "m-l-5 justify-content-end align-self-center fa fa-check-circle text-success");
+    }
     makeModule() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.selectValue) {
@@ -107,6 +113,7 @@ class App {
                     const nivelModulo = this.getNivelModulo(this.selectValue);
                     try {
                         yield this.api.finalizarModulo(nivelModulo);
+                        this.addCheckModulo(nivelModulo);
                     }
                     catch (err) {
                         alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);

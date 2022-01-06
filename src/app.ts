@@ -98,6 +98,13 @@ class App {
     return this.select.valueOptions.indexOf(value) + 1; 
   }
 
+  private addCheckModulo(nivelModulo: number) {
+    this.select.optionsDOM[nivelModulo - 1]
+      .children[0]
+      .children[1]
+      .setAttribute("class", "m-l-5 justify-content-end align-self-center fa fa-check-circle text-success");
+  }
+
   private async makeModule() {
     if (this.selectValue) {
       if (this.selectValue !== "Avaliação") {
@@ -105,6 +112,7 @@ class App {
         const nivelModulo: number = this.getNivelModulo(this.selectValue);
         try {
           await this.api.finalizarModulo(nivelModulo);
+          this.addCheckModulo(nivelModulo);
         } catch(err) {
           alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
         }
