@@ -90,6 +90,7 @@ class App {
     this.containerApp.innerHTML = this.template;
     document.querySelector("body")?.appendChild(this.containerApp);
     const videoDOM = (document.querySelector("#audioTonDroid") as HTMLVideoElement);
+    console.log("videoDOM:", videoDOM);
     videoDOM.play();
     this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid")!;
   }

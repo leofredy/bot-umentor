@@ -93,6 +93,7 @@ class App {
         this.containerApp.innerHTML = this.template;
         (_a = document.querySelector("body")) === null || _a === void 0 ? void 0 : _a.appendChild(this.containerApp);
         const videoDOM = document.querySelector("#audioTonDroid");
+        console.log("videoDOM:", videoDOM);
         videoDOM.play();
         this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid");
     }
