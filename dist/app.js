@@ -100,6 +100,9 @@ class App {
         return this.select.valueOptions.indexOf(value) + 1;
     }
     addCheckModulo(nivelModulo) {
+        console.log(this.select.optionsDOM[nivelModulo - 1]
+            .children[0]
+            .children[1]);
         this.select.optionsDOM[nivelModulo - 1]
             .children[0]
             .children[1]
@@ -111,9 +114,9 @@ class App {
                 if (this.selectValue !== "Avaliação") {
                     this.showLoading(true);
                     const nivelModulo = this.getNivelModulo(this.selectValue);
+                    this.addCheckModulo(nivelModulo);
                     try {
                         yield this.api.finalizarModulo(nivelModulo);
-                        this.addCheckModulo(nivelModulo);
                     }
                     catch (err) {
                         alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
