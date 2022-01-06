@@ -101,9 +101,12 @@ class App {
 
   private addCheckModulo(nivelModulo: number) {
     console.log(this.select.optionsDOM[nivelModulo - 1].children[1], nivelModulo)
-    this.select.optionsDOM[nivelModulo - 1]
-      .children[1]
-      .setAttribute("class", "m-l-5 justify-content-end align-self-center fa fa-check-circle text-success");
+    const iconeModulo = this.select.optionsDOM[nivelModulo - 1].children[1];
+    iconeModulo.classList.remove("fa-times");
+    iconeModulo.classList.remove("text-danger");
+    iconeModulo.classList.add("fa-check-circle");
+    iconeModulo.classList.add("text-success");
+      "  "
   }
 
   private async makeModule(eventTarget: HTMLInputElement) {
