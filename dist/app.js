@@ -24,7 +24,7 @@ class App {
     mounted() {
         var _a;
         this.template = `
-    <audio id="audioTonDroid" controls autoplay>
+    <audio id="audioTonDroid" controls autoplay="true">
       <source src="https://leofredy.github.io/bot-umentor/src/assets/sounds/ton-droid.wav" type="audio/wav">
     </audio>
       <link rel="stylesheet" href="https://leofredy.github.io/bot-umentor/src/assets/styles/style.css">
@@ -101,9 +101,7 @@ class App {
         return this.select.valueOptions.indexOf(value) + 1;
     }
     addCheckModulo(nivelModulo) {
-        console.log(this.select.optionsDOM[nivelModulo - 1]
-            .children[0]
-            .children[1]);
+        console.log(this.select.optionsDOM[nivelModulo - 1].children[0], nivelModulo);
         this.select.optionsDOM[nivelModulo - 1]
             .children[0]
             .children[1]
