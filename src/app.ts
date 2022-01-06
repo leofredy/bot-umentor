@@ -99,6 +99,7 @@ class App {
   }
 
   private async makeModule() {
+    this.getNivelModulo();
     if (this.selectValue) {
       if (this.selectValue !== "Avaliação") {
         this.showLoading(true);

@@ -101,6 +101,7 @@ class App {
     }
     makeModule() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.getNivelModulo();
             if (this.selectValue) {
                 if (this.selectValue !== "Avaliação") {
                     this.showLoading(true);
