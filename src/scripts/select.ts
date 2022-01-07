@@ -94,10 +94,12 @@ class Select {
 
   private changeEvent(event: Event): void {
     const valueTarget = (event.currentTarget as HTMLElement).children[1].getAttribute("value")!;
-    if (this.listModulosConcluidos.indexOf(valueTarget) === -1) {
-      this.value = valueTarget;
-      this.selectDOM.children[0].children[0].innerHTML = this.value; 
-      this.updateListOptions();
+    if (valueTarget) {
+      if (this.listModulosConcluidos.indexOf(valueTarget) === -1) {
+        this.value = valueTarget;
+        this.selectDOM.children[0].children[0].innerHTML = this.value; 
+        this.updateListOptions();
+      }
     }
     this.toggleEvent();
   }
