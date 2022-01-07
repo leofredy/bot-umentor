@@ -112,7 +112,7 @@ class App {
 
   private async makeModule(eventTarget: HTMLInputElement) {
     if (this.selectValue) {
-      if (this.selectValue !== "Avaliação") {
+      if (this.selectValue !== "Todos os módulos") {
         this.showLoading(true);
         const nivelModuloDOM: number = this.getNivelModuloDOM(this.selectValue);
         console.log("nivel Modulo:", nivelModuloDOM);
@@ -125,7 +125,7 @@ class App {
         }
         this.showLoading(false);
       } else {
-        alert("O módulo é uma avaliação!");
+        console.log("OPTIONS", this.select.valueOptions);
       }
     } else {
       alert("Selecione um módulo!");
