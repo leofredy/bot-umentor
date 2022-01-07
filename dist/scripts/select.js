@@ -110,6 +110,8 @@ class Select {
     mounted() {
         let optionsTemplate = ``;
         this.listModuloDOM.forEach(moduloDOM => {
+            const checkSVG = moduloDOM.children[0].children[1];
+            console.log("MOUNTED SELECT:", checkSVG);
             const text = moduloDOM.innerText;
             if (text !== "Informações" && text !== "Certificado" && text !== "Avalie o Curso") {
                 optionsTemplate += `
