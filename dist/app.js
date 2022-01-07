@@ -119,6 +119,7 @@ class App {
                     try {
                         yield this.api.finalizarModulo(nivelModuloDOM);
                         this.addCheckModulo(nivelModuloDOM);
+                        this.select.finishModulo();
                     }
                     catch (err) {
                         alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);

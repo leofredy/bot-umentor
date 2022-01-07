@@ -1,12 +1,11 @@
 class Select {
     constructor(changeListener) {
         this.status = false;
-        this._value = "";
-        this._optionsDOM = [];
-        this._valueOptions = [];
-        this.exaustToggle = 0;
         this.body = document.querySelector("body");
         this._template = "";
+        this._optionsDOM = [];
+        this._value = "";
+        this._valueOptions = [];
         this.changeListener = changeListener;
         this.selectDOM = (document.querySelector("body"));
         this.listModuloDOM = [...document.querySelectorAll("a.list-group-item")];
@@ -51,22 +50,20 @@ class Select {
             option.addEventListener("click", (event) => this.changeEvent(event));
         });
     }
+    removerEventChange(optionText) {
+        //Quando o módulo é finalizado deve ser removido seu evento de change
+        const option = [...this.selectDOM.children[1].children].find(option => {
+            return option.innerText === optionText;
+        });
+        option.removeEventListener("click", (event) => this.changeEvent(event));
+        console.log("option com evento removido:", option);
+    }
     toggleEvent() {
-        clearTimeout(this.exaustToggle);
         if (this.status) {
             this.selectDOM.children[1].classList.remove("show");
-            this.selectDOM.children[1].classList.add("closing");
-            this.exaustToggle = setTimeout(() => {
-                this.selectDOM.children[1].classList.remove("closing");
-            }, 900);
-            this.body.removeEventListener("click", this.toggleBody, false);
         }
         else {
-            this.selectDOM.children[1].classList.remove("closing");
-            this.exaustToggle = setTimeout(() => {
-                this.selectDOM.children[1].classList.add("show");
-                this.body.addEventListener("click", this.toggleBody, false);
-            }, 100);
+            this.selectDOM.children[1].classList.add("show");
         }
         this.status = !this.status;
     }
@@ -77,6 +74,17 @@ class Select {
         this.value = event.currentTarget.children[1].getAttribute("value");
         this.selectDOM.children[0].children[0].innerHTML = this.value;
         this.toggleEvent();
+        this.updateListOptions();
+    }
+    finishModulo() {
+        const currentValue = this.value;
+        console.log("currentValue", currentValue);
+        this.resetCurrentValue();
+        this.removerEventChange(currentValue);
+    }
+    resetCurrentValue() {
+        this.value = "Selecione um módulo";
+        this.selectDOM.children[0].children[0].innerHTML = this.value;
         this.updateListOptions();
     }
     updateListOptions() {
