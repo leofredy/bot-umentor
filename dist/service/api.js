@@ -2,8 +2,6 @@ class Services {
     constructor(curso) {
         this.url_base = "https://painel.umentor.com.br/painel_candidato/";
         this.curso = curso;
-        this.operacao = operacao;
-        this.codigo_trilha = codigo_trilha;
     }
     finalizarModulo(nivelModulo) {
         const hrefModulo = [...document.querySelectorAll(".list-group-item")][nivelModulo].getAttribute("href");

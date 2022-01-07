@@ -5,10 +5,8 @@ class Services {
   private url_base: string = "https://painel.umentor.com.br/painel_candidato/";
   private curso: number;
 
-  constructor(, curso:number) {
+  constructor(curso:number) {
     this.curso = curso;
-    this.operacao = operacao;
-    this.codigo_trilha = codigo_trilha;
   }
 
   public finalizarModulo(nivelModulo: number): Promise<response> {
