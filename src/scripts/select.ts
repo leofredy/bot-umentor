@@ -148,7 +148,7 @@ class Select {
       const checkSVG = moduloDOM.children[0].children[1];
       if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {
         const text: string = moduloDOM.innerText;
-        if (text !== "Informações" && text !== "Certificado" && text !== "Avalie o Curso") {
+        if (text !== "Informações" && text !== "Certificado" && text !== "Avalie o Curso" && text !== "Avaliação") {
           optionsTemplate += `
             <li class="select-option">
               <p>
