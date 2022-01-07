@@ -134,6 +134,8 @@ class App {
                         if (checkSVG.getAttribute("class").split(" ").indexOf("text-danger") !== -1) {
                             try {
                                 yield this.api.finalizarModulo(index);
+                                this.addCheckModulo(index);
+                                this.select.finishModulo();
                             }
                             catch (error) {
                                 alert(`Erro ao finalizar módulo: ${this.select.valueOptions[index]}`);
