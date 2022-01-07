@@ -139,7 +139,7 @@ class Select {
     let optionsTemplate: string = ``;
     this.listModuloDOM.forEach(moduloDOM => {
       const checkSVG = moduloDOM.children[0].children[1];
-      if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger")) {
+      if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {
         const text: string = moduloDOM.innerText;
         if (text !== "Informações" && text !== "Certificado" && text !== "Avalie o Curso") {
           optionsTemplate += `
