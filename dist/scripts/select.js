@@ -55,8 +55,8 @@ class Select {
         const option = [...this.selectDOM.children[1].children].find(option => {
             return option.innerText === optionText;
         });
-        option.removeEventListener("click", (event) => this.changeEvent(event));
         console.log("option com evento removido:", option);
+        option.removeEventListener("click", (event) => this.changeEvent(event));
     }
     toggleEvent() {
         if (this.status) {
