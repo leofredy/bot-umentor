@@ -11,6 +11,7 @@ class Select {
   private _value: string = "";
   private _valueOptions: Array<string> = [];
   private listModuloDOM: Array<HTMLElement>;
+  private listModulosConcluidos: Array<string> = [];
 
   constructor(changeListener: listener) {
     this.changeListener = changeListener;
@@ -70,16 +71,6 @@ class Select {
     });
   }
 
-  private removerEventChange(optionText: string) {
-    //Quando o módulo é finalizado deve ser removido seu evento de change
-    const option = ([...this.selectDOM.children[1].children] as Array<HTMLElement>).find(option => {
-      console.log("options", option, option.innerText, `${option.innerText.trim()}` === `${optionText}`)
-      return option.innerText.trim() === optionText;
-    });
-    console.log("option com evento removido:", option);
-    option!.removeEventListener("click", (event) => this.changeEvent(event));
-  }
-
   private toggleEvent(): void {    
     if (this.status) {
       this.selectDOM.children[1].classList.remove("show");
@@ -95,17 +86,19 @@ class Select {
   }
 
   private changeEvent(event: Event): void {
-    this.value = (event.currentTarget as HTMLElement).children[1].getAttribute("value")!;
-    this.selectDOM.children[0].children[0].innerHTML = this.value; 
+    const valueTarget = (event.currentTarget as HTMLElement).children[1].getAttribute("value")!;
+    if (this.listModulosConcluidos.indexOf(valueTarget) !== -1) {
+      this.value = valueTarget;
+      this.selectDOM.children[0].children[0].innerHTML = this.value; 
+      this.updateListOptions();
+    }
     this.toggleEvent();
-    this.updateListOptions();
   }
 
   public finishModulo() {
     const currentValue = this.value;
-    console.log("currentValue", currentValue)
+    this.listModulosConcluidos.push(currentValue);
     this.resetCurrentValue();
-    this.removerEventChange(currentValue);
   }
 
   private resetCurrentValue() {

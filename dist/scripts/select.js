@@ -6,6 +6,7 @@ class Select {
         this._optionsDOM = [];
         this._value = "";
         this._valueOptions = [];
+        this.listModulosConcluidos = [];
         this.changeListener = changeListener;
         this.selectDOM = (document.querySelector("body"));
         this.listModuloDOM = [...document.querySelectorAll("a.list-group-item")];
@@ -50,15 +51,6 @@ class Select {
             option.addEventListener("click", (event) => this.changeEvent(event));
         });
     }
-    removerEventChange(optionText) {
-        //Quando o módulo é finalizado deve ser removido seu evento de change
-        const option = [...this.selectDOM.children[1].children].find(option => {
-            console.log("options", option, option.innerText, `${option.innerText.trim()}` === `${optionText}`);
-            return option.innerText.trim() === optionText;
-        });
-        console.log("option com evento removido:", option);
-        option.removeEventListener("click", (event) => this.changeEvent(event));
-    }
     toggleEvent() {
         if (this.status) {
             this.selectDOM.children[1].classList.remove("show");
@@ -72,16 +64,18 @@ class Select {
         this.toggleEvent();
     }
     changeEvent(event) {
-        this.value = event.currentTarget.children[1].getAttribute("value");
-        this.selectDOM.children[0].children[0].innerHTML = this.value;
+        const valueTarget = event.currentTarget.children[1].getAttribute("value");
+        if (this.listModulosConcluidos.indexOf(valueTarget) !== -1) {
+            this.value = valueTarget;
+            this.selectDOM.children[0].children[0].innerHTML = this.value;
+            this.updateListOptions();
+        }
         this.toggleEvent();
-        this.updateListOptions();
     }
     finishModulo() {
         const currentValue = this.value;
-        console.log("currentValue", currentValue);
+        this.listModulosConcluidos.push(currentValue);
         this.resetCurrentValue();
-        this.removerEventChange(currentValue);
     }
     resetCurrentValue() {
         this.value = "Selecione um módulo";
