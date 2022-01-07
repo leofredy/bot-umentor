@@ -1,3 +1,3 @@
 import App from "./app.js";
-const app = new App(indice, curso);
+const app = new App(curso);
 app.init();

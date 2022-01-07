@@ -10,13 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import Select from "./scripts/select.js";
 import Services from "./service/api.js";
 class App {
-    constructor(indice, curso) {
+    constructor(curso) {
         this.template = "";
         this.containerApp = document.createElement("div");
         this.loaderApp = document.createElement("div");
         this.selectValue = "";
         this.bindEvents();
-        this.api = new Services(indice, curso);
+        this.api = new Services(curso);
         this.containerApp.setAttribute("id", "appTonDoid");
         this.select = new Select(this.selectChange);
         this.selectTemplate = this.select.template;
@@ -98,11 +98,11 @@ class App {
         videoDOM.muted = false;
         this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid");
     }
-    getNivelModulo(value) {
-        return this.select.valueOptions.indexOf(value) + 1;
+    getNivelModuloDOM(value) {
+        return this.select.valueOptions.indexOf(value);
     }
     addCheckModulo(nivelModulo) {
-        const iconeModulo = [...document.querySelectorAll(".list-group-item")][nivelModulo - 1].children[0].children[1];
+        const iconeModulo = [...document.querySelectorAll(".list-group-item")][nivelModulo].children[0].children[1];
         iconeModulo.classList.remove("fa-times");
         iconeModulo.classList.remove("text-danger");
         iconeModulo.classList.add("fa-check-circle");
@@ -114,11 +114,11 @@ class App {
             if (this.selectValue) {
                 if (this.selectValue !== "Avaliação") {
                     this.showLoading(true);
-                    const nivelModulo = this.getNivelModulo(this.selectValue);
-                    console.log("nivel Modulo:", nivelModulo);
+                    const nivelModuloDOM = this.getNivelModuloDOM(this.selectValue);
+                    console.log("nivel Modulo:", nivelModuloDOM);
                     try {
-                        yield this.api.finalizarModulo(nivelModulo - 1);
-                        this.addCheckModulo(nivelModulo);
+                        yield this.api.finalizarModulo(nivelModuloDOM);
+                        this.addCheckModulo(nivelModuloDOM);
                     }
                     catch (err) {
                         alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);

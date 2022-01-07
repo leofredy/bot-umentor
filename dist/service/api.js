@@ -1,16 +1,17 @@
 class Services {
-    constructor(indice, curso) {
+    constructor(curso) {
         this.url_base = "https://painel.umentor.com.br/painel_candidato/";
-        this.indice = indice;
         this.curso = curso;
         this.operacao = operacao;
         this.codigo_trilha = codigo_trilha;
     }
     finalizarModulo(nivelModulo) {
+        const hrefModulo = [...document.querySelectorAll(".list-group-item")][nivelModulo].getAttribute("href");
+        const indice = hrefModulo.split("-")[1].replace("99", "");
         return new Promise(resolve => {
             const request1 = new Promise(resolve => {
                 $.post(`${this.url_base}videos_aulas/controle_cursos`, {
-                    indice: this.indice + (nivelModulo > 0 ? nivelModulo - 1 : 0),
+                    indice: indice,
                     curso: this.curso,
                     operacao: operacao,
                     codigo_trilha: codigo_trilha
@@ -21,7 +22,7 @@ class Services {
             });
             const request2 = new Promise(resolve => {
                 $.post(`${this.url_base}videos_aulas/controle_cursos`, {
-                    indice: this.indice + (nivelModulo > 0 ? nivelModulo - 1 : 0),
+                    indice: indice,
                     curso: this.curso,
                     operacao: operacao + 1,
                     codigo_trilha: codigo_trilha
@@ -32,7 +33,7 @@ class Services {
             });
             const request3 = new Promise(resolve => {
                 $.post(`${this.url_base}videos_aulas/controle_cursos`, {
-                    indice: this.indice + (nivelModulo > 0 ? nivelModulo - 1 : 0),
+                    indice: indice,
                     curso: this.curso,
                     operacao: operacao - 1,
                     codigo_trilha: codigo_trilha

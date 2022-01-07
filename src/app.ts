@@ -11,9 +11,9 @@ class App {
   private api: Services;
 
 
-  constructor(indice:number, curso:number) {
+  constructor(curso:number) {
     this.bindEvents();
-    this.api = new Services(indice, curso);
+    this.api = new Services(curso);
     this.containerApp.setAttribute("id", "appTonDoid");
     this.select = new Select(this.selectChange);
     this.selectTemplate = this.select.template;
@@ -96,12 +96,12 @@ class App {
     this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid")!;
   }
 
-  private getNivelModulo(value: string) {
-    return this.select.valueOptions.indexOf(value) + 1; 
+  private getNivelModuloDOM(value: string) {
+    return this.select.valueOptions.indexOf(value); 
   }
 
   private addCheckModulo(nivelModulo: number) {
-    const iconeModulo = ([...document.querySelectorAll(".list-group-item")!] as Array<HTMLElement>)[nivelModulo - 1].children[0].children[1];
+    const iconeModulo = ([...document.querySelectorAll(".list-group-item")!] as Array<HTMLElement>)[nivelModulo].children[0].children[1];
     iconeModulo.classList.remove("fa-times");
     iconeModulo.classList.remove("text-danger");
     iconeModulo.classList.add("fa-check-circle");
@@ -113,11 +113,11 @@ class App {
     if (this.selectValue) {
       if (this.selectValue !== "Avaliação") {
         this.showLoading(true);
-        const nivelModulo: number = this.getNivelModulo(this.selectValue);
-        console.log("nivel Modulo:", nivelModulo);
+        const nivelModuloDOM: number = this.getNivelModuloDOM(this.selectValue);
+        console.log("nivel Modulo:", nivelModuloDOM);
         try {
-          await this.api.finalizarModulo(nivelModulo - 1);
-          this.addCheckModulo(nivelModulo);
+          await this.api.finalizarModulo(nivelModuloDOM);
+          this.addCheckModulo(nivelModuloDOM);
         } catch(err) {
           alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
         }
