@@ -143,6 +143,10 @@
   background-color: #529359;
   cursor: not-allowed;
 }
+#appTonDoid li[data-check="true"]:hover {
+  background-color: #529359;
+  cursor: not-allowed;
+}
 #appTonDoid .select-options.show {
   display: block;
 }
