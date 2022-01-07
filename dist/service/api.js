@@ -22,25 +22,14 @@ class Services {
                 $.post(`${this.url_base}videos_aulas/controle_cursos`, {
                     indice: indice,
                     curso: this.curso,
-                    operacao: operacao + 1,
+                    operacao: operacao > 1 ? 1 : 2,
                     codigo_trilha: codigo_trilha
                 }, function (results) {
                     const params = $.parseJSON(results);
                     resolve(params);
                 });
             });
-            const request3 = new Promise(resolve => {
-                $.post(`${this.url_base}videos_aulas/controle_cursos`, {
-                    indice: indice,
-                    curso: this.curso,
-                    operacao: operacao === 1 ? operacao : operacao - 1,
-                    codigo_trilha: codigo_trilha
-                }, function (results) {
-                    const params = $.parseJSON(results);
-                    resolve(params);
-                });
-            });
-            Promise.all([request1, request2, request3]).then((values) => {
+            Promise.all([request1, request2]).then((values) => {
                 console.log("Result promises", values);
                 resolve(values);
             });
