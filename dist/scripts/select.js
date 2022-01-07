@@ -65,7 +65,7 @@ class Select {
     }
     changeEvent(event) {
         const valueTarget = event.currentTarget.children[1].getAttribute("value");
-        if (this.listModulosConcluidos.indexOf(valueTarget) !== -1) {
+        if (this.listModulosConcluidos.indexOf(valueTarget) === -1) {
             this.value = valueTarget;
             this.selectDOM.children[0].children[0].innerHTML = this.value;
             this.updateListOptions();
