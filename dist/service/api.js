@@ -15,6 +15,7 @@ class Services {
                     codigo_trilha: codigo_trilha
                 }, function (results) {
                     const params = $.parseJSON(results);
+                    console.log(params);
                     resolve(params);
                 });
             });
