@@ -112,6 +112,7 @@ class App {
     }
     makeModule(eventTarget) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log("selectValue", this.selectValue);
             if (this.selectValue) {
                 if (this.selectValue !== "Todos os módulos") {
                     this.showLoading(true);

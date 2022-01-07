@@ -111,6 +111,7 @@ class App {
   }
 
   private async makeModule(eventTarget: HTMLInputElement) {
+    console.log("selectValue", this.selectValue);
     if (this.selectValue) {
       if (this.selectValue !== "Todos os módulos") {
         this.showLoading(true);
