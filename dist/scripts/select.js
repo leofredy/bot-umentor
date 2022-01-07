@@ -6,11 +6,18 @@ class Select {
         this._optionsDOM = [];
         this._value = "";
         this._valueOptions = [];
+        this._listModuloDOM = [];
         this.listModulosConcluidos = [];
         this.changeListener = changeListener;
         this.selectDOM = (document.querySelector("body"));
         this.listModuloDOM = [...document.querySelectorAll("a.list-group-item")];
         this.mounted();
+    }
+    get listModuloDOM() {
+        return this._listModuloDOM;
+    }
+    set listModuloDOM(listModulosDOM) {
+        this._listModuloDOM = listModulosDOM;
     }
     get optionsDOM() {
         return this._optionsDOM;

@@ -10,7 +10,7 @@ class Select {
 
   private _value: string = "";
   private _valueOptions: Array<string> = [];
-  private listModuloDOM: Array<HTMLElement>;
+  private _listModuloDOM: Array<HTMLElement> = [];
   private listModulosConcluidos: Array<string> = [];
 
   constructor(changeListener: listener) {
@@ -18,6 +18,14 @@ class Select {
     this.selectDOM = (document.querySelector("body")!);
     this.listModuloDOM = ([...document.querySelectorAll("a.list-group-item")!] as Array<HTMLElement>);
     this.mounted();
+  }
+
+  public get listModuloDOM() {
+    return this._listModuloDOM;
+  }
+
+  private set listModuloDOM(listModulosDOM: Array<HTMLElement>) {
+    this._listModuloDOM = listModulosDOM;
   }
 
   public get optionsDOM() {

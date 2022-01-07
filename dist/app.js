@@ -99,7 +99,8 @@ class App {
         this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid");
     }
     getNivelModuloDOM(value) {
-        return this.select.valueOptions.indexOf(value);
+        const nivelModulo = this.select.listModuloDOM.findIndex(modulo => modulo.innerText.trim() === value);
+        return nivelModulo;
     }
     addCheckModulo(nivelModulo) {
         const iconeModulo = [...document.querySelectorAll(".list-group-item")][nivelModulo].children[0].children[1];

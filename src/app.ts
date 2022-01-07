@@ -97,7 +97,8 @@ class App {
   }
 
   private getNivelModuloDOM(value: string) {
-    return this.select.valueOptions.indexOf(value); 
+    const nivelModulo:number = this.select.listModuloDOM.findIndex(modulo => modulo.innerText.trim() === value);
+    return nivelModulo;
   }
 
   private addCheckModulo(nivelModulo: number) {
