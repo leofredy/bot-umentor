@@ -94,8 +94,12 @@ class Select {
         let template = "";
         this.valueOptions.forEach(valorOption => {
             if (valorOption !== this.value) {
+                let checked = "false";
+                if (this.listModulosConcluidos.indexOf(valorOption)) {
+                    checked = "true";
+                }
                 template += `
-          <li class="select-option">
+          <li data-check="${checked}" class="select-option">
             <p>
               ${valorOption}
             </p>

@@ -120,8 +120,12 @@ class Select {
     let template: string = "";
     this.valueOptions.forEach(valorOption => {
       if (valorOption !== this.value) {
+        let checked: string = "false";
+        if (this.listModulosConcluidos.indexOf(valorOption)) {
+          checked = "true";
+        } 
         template += `
-          <li class="select-option">
+          <li data-check="${checked}" class="select-option">
             <p>
               ${valorOption}
             </p>
