@@ -139,7 +139,7 @@
   border-radius: 4px;
   background-color: #252525;
 }
-#appTonDoid .select-option[data-check="true"] {
+#appTonDoid li[data-check="true"] {
   background-color: #529359;
   cursor: not-allowed;
 }
