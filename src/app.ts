@@ -11,9 +11,9 @@ class App {
   private api: Services;
 
 
-  constructor(indice:number, curso:number, operacao:number, codigo_trilha:number) {
+  constructor(indice:number, curso:number) {
     this.bindEvents();
-    this.api = new Services(indice, curso, operacao, codigo_trilha);
+    this.api = new Services(indice, curso);
     this.containerApp.setAttribute("id", "appTonDoid");
     this.select = new Select(this.selectChange);
     this.selectTemplate = this.select.template;
@@ -117,7 +117,7 @@ class App {
         const nivelModulo: number = this.getNivelModulo(this.selectValue);
         try {
           await this.api.finalizarModulo(nivelModulo);
-          this.addCheckModulo(nivelModulo);
+          // this.addCheckModulo(nivelModulo);
         } catch(err) {
           alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
         }

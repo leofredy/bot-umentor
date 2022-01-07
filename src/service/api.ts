@@ -5,10 +5,8 @@ class Services {
   private url_base: string = "https://painel.umentor.com.br/painel_candidato/";
   private indice: number;
   private curso: number;
-  private operacao: number;
-  private codigo_trilha: number | null;
 
-  constructor(indice:number, curso:number, operacao:number, codigo_trilha:number) {
+  constructor(indice:number, curso:number) {
     this.indice = indice;
     this.curso = curso;
     this.operacao = operacao;
@@ -21,8 +19,8 @@ class Services {
         `${this.url_base}videos_aulas/controle_cursos`, {
         indice: this.indice + (nivelModulo > 0 ? nivelModulo - 1: 0),
         curso: this.curso,
-        operacao: this.operacao,
-        codigo_trilha: this.codigo_trilha
+        operacao: operacao,
+        codigo_trilha: codigo_trilha
       }, function (results: response) {
         const params = $.parseJSON(results);
         resolve(params);

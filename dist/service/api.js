@@ -1,5 +1,5 @@
 class Services {
-    constructor(indice, curso, operacao, codigo_trilha) {
+    constructor(indice, curso) {
         this.url_base = "https://painel.umentor.com.br/painel_candidato/";
         this.indice = indice;
         this.curso = curso;
@@ -11,8 +11,8 @@ class Services {
             $.post(`${this.url_base}videos_aulas/controle_cursos`, {
                 indice: this.indice + (nivelModulo > 0 ? nivelModulo - 1 : 0),
                 curso: this.curso,
-                operacao: this.operacao,
-                codigo_trilha: this.codigo_trilha
+                operacao: operacao,
+                codigo_trilha: codigo_trilha
             }, function (results) {
                 const params = $.parseJSON(results);
                 resolve(params);

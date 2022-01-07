@@ -10,13 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import Select from "./scripts/select.js";
 import Services from "./service/api.js";
 class App {
-    constructor(indice, curso, operacao, codigo_trilha) {
+    constructor(indice, curso) {
         this.template = "";
         this.containerApp = document.createElement("div");
         this.loaderApp = document.createElement("div");
         this.selectValue = "";
         this.bindEvents();
-        this.api = new Services(indice, curso, operacao, codigo_trilha);
+        this.api = new Services(indice, curso);
         this.containerApp.setAttribute("id", "appTonDoid");
         this.select = new Select(this.selectChange);
         this.selectTemplate = this.select.template;
@@ -118,7 +118,7 @@ class App {
                     const nivelModulo = this.getNivelModulo(this.selectValue);
                     try {
                         yield this.api.finalizarModulo(nivelModulo);
-                        this.addCheckModulo(nivelModulo);
+                        // this.addCheckModulo(nivelModulo);
                     }
                     catch (err) {
                         alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
