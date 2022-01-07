@@ -102,6 +102,7 @@ class App {
 
   private addCheckModulo(nivelModulo: number) {
     // console.log(this.select.optionsDOM[nivelModulo - 1].children[1], nivelModulo)
+    console.log("Selecionando: ", ([...document.querySelectorAll(".list-group-item")!] as Array<HTMLElement>)[nivelModulo - 1].children[0].children[1]);
     const iconeModulo = this.select.optionsDOM[nivelModulo - 1].children[1];
     iconeModulo.classList.remove("fa-times");
     iconeModulo.classList.remove("text-danger");
