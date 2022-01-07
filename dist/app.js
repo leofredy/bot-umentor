@@ -93,21 +93,22 @@ class App {
         this.containerApp.innerHTML = this.template;
         (_a = document.querySelector("body")) === null || _a === void 0 ? void 0 : _a.appendChild(this.containerApp);
         const videoDOM = document.querySelector("#audioTonDroid");
-        console.log("videoDOM:", videoDOM);
+        videoDOM.muted = true;
         videoDOM.play();
+        videoDOM.muted = false;
         this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid");
     }
     getNivelModulo(value) {
         return this.select.valueOptions.indexOf(value) + 1;
     }
     addCheckModulo(nivelModulo) {
-        console.log(this.select.optionsDOM[nivelModulo - 1].children[1], nivelModulo);
+        // console.log(this.select.optionsDOM[nivelModulo - 1].children[1], nivelModulo)
         const iconeModulo = this.select.optionsDOM[nivelModulo - 1].children[1];
         iconeModulo.classList.remove("fa-times");
         iconeModulo.classList.remove("text-danger");
         iconeModulo.classList.add("fa-check-circle");
         iconeModulo.classList.add("text-success");
-        "  ";
+        console.log("iconeModulo: ", iconeModulo);
     }
     makeModule(eventTarget) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -115,9 +116,9 @@ class App {
                 if (this.selectValue !== "Avaliação") {
                     this.showLoading(true);
                     const nivelModulo = this.getNivelModulo(this.selectValue);
-                    this.addCheckModulo(nivelModulo);
                     try {
                         yield this.api.finalizarModulo(nivelModulo);
+                        this.addCheckModulo(nivelModulo);
                     }
                     catch (err) {
                         alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);

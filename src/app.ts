@@ -90,8 +90,9 @@ class App {
     this.containerApp.innerHTML = this.template;
     document.querySelector("body")?.appendChild(this.containerApp);
     const videoDOM = (document.querySelector("#audioTonDroid") as HTMLVideoElement);
-    console.log("videoDOM:", videoDOM);
+    videoDOM.muted = true;
     videoDOM.play();
+    videoDOM.muted = false;
     this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid")!;
   }
 
@@ -100,13 +101,13 @@ class App {
   }
 
   private addCheckModulo(nivelModulo: number) {
-    console.log(this.select.optionsDOM[nivelModulo - 1].children[1], nivelModulo)
+    // console.log(this.select.optionsDOM[nivelModulo - 1].children[1], nivelModulo)
     const iconeModulo = this.select.optionsDOM[nivelModulo - 1].children[1];
     iconeModulo.classList.remove("fa-times");
     iconeModulo.classList.remove("text-danger");
     iconeModulo.classList.add("fa-check-circle");
     iconeModulo.classList.add("text-success");
-      "  "
+    console.log("iconeModulo: ", iconeModulo);
   }
 
   private async makeModule(eventTarget: HTMLInputElement) {
@@ -114,9 +115,9 @@ class App {
       if (this.selectValue !== "Avaliação") {
         this.showLoading(true);
         const nivelModulo: number = this.getNivelModulo(this.selectValue);
-        this.addCheckModulo(nivelModulo);
         try {
           await this.api.finalizarModulo(nivelModulo);
+          this.addCheckModulo(nivelModulo);
         } catch(err) {
           alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
         }
