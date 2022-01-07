@@ -118,8 +118,8 @@ class App {
                     this.showLoading(true);
                     const nivelModulo = this.getNivelModulo(this.selectValue);
                     try {
-                        yield this.api.finalizarModulo(nivelModulo);
-                        // this.addCheckModulo(nivelModulo);
+                        yield this.api.finalizarModulo(nivelModulo - 1);
+                        this.addCheckModulo(nivelModulo);
                     }
                     catch (err) {
                         alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
