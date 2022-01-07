@@ -126,7 +126,7 @@ class App {
         }
         this.showLoading(false);
       } else {
-        console.log("OPTIONS", this.select.valueOptions);
+        console.log("OPTIONS", this.select.valueOptions, this.select.listModuloDOM);
       }
     } else {
       alert("Selecione um módulo!");
