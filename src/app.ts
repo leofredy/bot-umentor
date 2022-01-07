@@ -114,6 +114,7 @@ class App {
       if (this.selectValue !== "Avaliação") {
         this.showLoading(true);
         const nivelModulo: number = this.getNivelModulo(this.selectValue);
+        console.log("nivel Modulo:", nivelModulo);
         try {
           await this.api.finalizarModulo(nivelModulo - 1);
           this.addCheckModulo(nivelModulo);
