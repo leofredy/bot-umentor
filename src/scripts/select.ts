@@ -139,17 +139,20 @@ class Select {
     let optionsTemplate: string = ``;
     this.listModuloDOM.forEach(moduloDOM => {
       const checkSVG = moduloDOM.children[0].children[1];
-      console.log("MOUNTED SELECT:", checkSVG);
-      const text: string = moduloDOM.innerText;
-      if (text !== "Informações" && text !== "Certificado" && text !== "Avalie o Curso") {
-        optionsTemplate += `
-          <li class="select-option">
-            <p>
-              ${text}
-            </p>
-            <input value="${text}" type="text">
-          </li>
-        `;
+      if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger")) {
+        const text: string = moduloDOM.innerText;
+        if (text !== "Informações" && text !== "Certificado" && text !== "Avalie o Curso") {
+          optionsTemplate += `
+            <li class="select-option">
+              <p>
+                ${text}
+              </p>
+              <input value="${text}" type="text">
+            </li>
+          `;
+        }
+      } else {
+        this.listModulosConcluidos.push(moduloDOM.innerText.trim());
       }
     });
     this._template += `
@@ -165,12 +168,23 @@ class Select {
 
         <ul class="select-options">
           ${optionsTemplate}
-          <li class="select-option">
-            <p>
-              Todos os módulos
-            </p>
-            <input value="Todos os módulos" type="text">
-          </li>
+          ${
+
+            optionsTemplate.length ? 
+              `<li class="select-option">
+                <p>
+                  Todos os módulos
+                </p>
+                <input value="Todos os módulos" type="text">
+              </li>`
+              :
+              `<li class="select-option">
+                <p>
+                  Não possui modulos a concluir
+                </p>
+                <input value="" type="text">
+              </li>`
+          }
         </ul>
       </div>
     `;
