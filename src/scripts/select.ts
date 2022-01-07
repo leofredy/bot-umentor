@@ -73,7 +73,7 @@ class Select {
   private removerEventChange(optionText: string) {
     //Quando o módulo é finalizado deve ser removido seu evento de change
     const option = ([...this.selectDOM.children[1].children] as Array<HTMLElement>).find(option => {
-      console.log("options", option, option.innerText, option.innerText === optionText)
+      console.log("options", option, option.innerText, `${option.innerText}` === `${optionText}`)
       return option.innerText === optionText;
     });
     console.log("option com evento removido:", option);
