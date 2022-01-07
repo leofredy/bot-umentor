@@ -130,6 +130,7 @@ class App {
                 else {
                     for (let index = 0; this.select.listModuloDOM.length - 4; index++) {
                         const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
+                        console.log("INDEX: ", index);
                         if (checkSVG.getAttribute("class").split(" ").indexOf("text-danger") !== -1) {
                             try {
                                 yield this.api.finalizarModulo(index);

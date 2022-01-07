@@ -114,7 +114,7 @@ class App {
     console.log("selectValue", this.selectValue);
     if (this.selectValue) {
       this.showLoading(true);
-      
+
       if (this.selectValue !== "Todos os módulos") {
         const nivelModuloDOM: number = this.getNivelModuloDOM(this.selectValue);
         console.log("nivel Modulo:", nivelModuloDOM);
@@ -129,7 +129,7 @@ class App {
       } else {
         for (let index = 0; this.select.listModuloDOM.length - 4; index++) {
           const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
-
+          console.log("INDEX: ", index);
           if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {
             try {
               await this.api.finalizarModulo(index);
