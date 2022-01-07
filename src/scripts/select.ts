@@ -111,8 +111,8 @@ class Select {
   }
 
   private resetCurrentValue() {
-    this.value = "Selecione um módulo";
-    this.selectDOM.children[0].children[0].innerHTML = this.value; 
+    this.value = "";
+    this.selectDOM.children[0].children[0].innerHTML = "Selecione um módulo"; 
     this.updateListOptions();
   }
 
