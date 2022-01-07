@@ -95,7 +95,7 @@ class Select {
         this.valueOptions.forEach(valorOption => {
             if (valorOption !== this.value) {
                 let checked = "false";
-                if (this.listModulosConcluidos.indexOf(valorOption)) {
+                if (this.listModulosConcluidos.indexOf(valorOption) !== -1) {
                     checked = "true";
                 }
                 template += `
