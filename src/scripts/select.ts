@@ -2,7 +2,6 @@ type listener = (value: string) => void;
 class Select {
   private selectDOM: HTMLElement;
   private status: boolean = false;
-  private body: HTMLElement = document.querySelector("body")!;
   private _template: string = "";
   private changeListener: listener;
   

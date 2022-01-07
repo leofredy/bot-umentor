@@ -141,11 +141,6 @@
 }
 #appTonDoid .select-options.show {
   display: block;
-  animation: fadeTop 0.4s forwards ease;
-}
-#appTonDoid .select-options.closing {
-  display: block;
-  animation: fadeTop 0.9s forwards ease reverse;
 }
 #appTonDoid .select-option {
   padding: 8px;

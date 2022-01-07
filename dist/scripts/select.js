@@ -1,7 +1,6 @@
 class Select {
     constructor(changeListener) {
         this.status = false;
-        this.body = document.querySelector("body");
         this._template = "";
         this._optionsDOM = [];
         this._value = "";
