@@ -21,7 +21,7 @@ class Services {
                 $.post(`${this.url_base}videos_aulas/controle_cursos`, {
                     indice: indice,
                     curso: this.curso,
-                    operacao: 2,
+                    operacao: operacao > 1 ? 1 : 2,
                     codigo_trilha: codigo_trilha
                 }, function () {
                     resolve();

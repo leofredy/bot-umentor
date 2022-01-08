@@ -111,9 +111,11 @@ class App {
   }
 
   private async makeModule(eventTarget: HTMLInputElement) {
+    console.log("selectValue", this.selectValue);
     if (this.selectValue) {
+      this.showLoading(true);
+
       if (this.selectValue !== "Todos os módulos") {
-        this.showLoading(true);
         const nivelModuloDOM: number = this.getNivelModuloDOM(this.selectValue);
         console.log("nivel Modulo:", nivelModuloDOM);
         try {
@@ -123,10 +125,25 @@ class App {
         } catch(err) {
           alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
         }
-        this.showLoading(false);
+        
       } else {
-        console.log("OPTIONS", this.select.valueOptions);
+        for (let index = 0; index < this.select.listModuloDOM.length - 3; index++) {
+          const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
+          console.log("INDEX: ", index);
+          if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {
+            try {
+              await this.api.finalizarModulo(index);
+              this.addCheckModulo(index);
+              this.select.finishModulo();
+            } catch(error) {
+              alert(`Erro ao finalizar módulo: ${this.select.valueOptions[index]}`);
+            }
+          }
+        }
+        console.log("OPTIONS", this.select.valueOptions, this.select.listModuloDOM);
       }
+
+      this.showLoading(false);
     } else {
       alert("Selecione um módulo!");
     }

@@ -86,16 +86,20 @@ class Select {
         this.resetCurrentValue();
     }
     resetCurrentValue() {
-        this.value = "Selecione um módulo";
-        this.selectDOM.children[0].children[0].innerHTML = this.value;
+        this.value = "";
+        this.selectDOM.children[0].children[0].innerHTML = "Selecione um módulo";
         this.updateListOptions();
     }
     updateListOptions() {
         let template = "";
         this.valueOptions.forEach(valorOption => {
             if (valorOption !== this.value) {
+                let checked = "false";
+                if (this.listModulosConcluidos.indexOf(valorOption) !== -1) {
+                    checked = "true";
+                }
                 template += `
-          <li class="select-option">
+          <li data-check="${checked}" class="select-option">
             <p>
               ${valorOption}
             </p>
