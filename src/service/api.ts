@@ -6,7 +6,7 @@ class Services {
     this.curso = curso;
   }
 
-  public finalizarModulo(nivelModulo: number): Promise<response> {
+  public finalizarModulo(nivelModulo: number): Promise<void> {
     const hrefModulo = ([...document.querySelectorAll(".list-group-item")!] as Array<HTMLElement>)[nivelModulo].getAttribute("href")!;
     const indice = hrefModulo.split("-")[1].replace("99", "");
     return new Promise(resolve => {
