@@ -153,20 +153,22 @@ class Select {
     this.listModuloDOM.forEach(moduloDOM => {
       console.log(moduloDOM.children[0].children[1], moduloDOM.children[0], moduloDOM.children[0].children);
       const checkSVG = moduloDOM.children[0].children[1];
-      if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {
-        const text: string = moduloDOM.innerText;
-        if (text !== "Informações" && text !== "Certificado" && text !== "Avalie o Curso" && text !== "Avaliação") {
-          optionsTemplate += `
-            <li class="select-option">
-              <p>
-                ${text}
-              </p>
-              <input value="${text}" type="text">
-            </li>
-          `;
+      if (checkSVG) {
+        if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {
+          const text: string = moduloDOM.innerText;
+          if (text !== "Informações" && text !== "Certificado" && text !== "Avalie o Curso" && text !== "Avaliação") {
+            optionsTemplate += `
+              <li class="select-option">
+                <p>
+                  ${text}
+                </p>
+                <input value="${text}" type="text">
+              </li>
+            `;
+          }
+        } else {
+          this.listModulosConcluidos.push(moduloDOM.innerText.trim());
         }
-      } else {
-        this.listModulosConcluidos.push(moduloDOM.innerText.trim());
       }
     });
     this._template += `
