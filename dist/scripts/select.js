@@ -122,6 +122,7 @@ class Select {
     mounted() {
         let optionsTemplate = ``;
         this.listModuloDOM.forEach(moduloDOM => {
+            console.log(moduloDOM);
             const checkSVG = moduloDOM.children[0].children[1];
             if (checkSVG.getAttribute("class").split(" ").indexOf("text-danger") !== -1) {
                 const text = moduloDOM.innerText;

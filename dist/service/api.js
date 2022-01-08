@@ -3,6 +3,30 @@ class Services {
         this.url_base = "https://painel.umentor.com.br/painel_candidato/";
         this.curso = curso;
     }
+    finalizaProva() {
+        // 2 é errado e 1 acertou!!
+        // $.ajax(
+        //   {
+        //     url: 'https://painel.umentor.com.br/painel_candidato/videos_aulas/gravar_teste',
+        //     data: a,
+        //     contentType: false,
+        //     processData: false,
+        //     type: 'POST',
+        //     success: function(data){
+        //       console.log(data);
+        //     }
+        // });
+        // $.ajax({
+        //     url: 'https://painel.umentor.com.br/painel_candidato/videos_aulas/gravar_teste',
+        //     data: new FormData(document.querySelector("#form_video_aula_testes")),
+        //     contentType: false,
+        //     processData: false,
+        //     type: 'POST',
+        //     success: function(data){
+        //         console.log(data);
+        //     }
+        // });
+    }
     finalizarModulo(nivelModulo) {
         const hrefModulo = [...document.querySelectorAll(".list-group-item")][nivelModulo].getAttribute("href");
         const indice = hrefModulo.split("-")[1].replace("99", "");
