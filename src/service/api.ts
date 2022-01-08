@@ -1,6 +1,3 @@
-type response = {
-  flag: string
-}
 class Services {
   private url_base: string = "https://painel.umentor.com.br/painel_candidato/";
   private curso: number;
@@ -18,11 +15,10 @@ class Services {
           `${this.url_base}videos_aulas/controle_cursos`, {
           indice: indice,
           curso: this.curso,
-          operacao: operacao,
+          operacao: 1,
           codigo_trilha: codigo_trilha
-        }, function (results: response) {
-          const params = $.parseJSON(results);
-          resolve(params);
+        }, function () {
+          resolve();
         });
       });
 
@@ -31,31 +27,16 @@ class Services {
           `${this.url_base}videos_aulas/controle_cursos`, {
           indice: indice,
           curso: this.curso,
-          operacao: operacao + 1,
+          operacao: 2,
           codigo_trilha: codigo_trilha
-        }, function (results: response) {
-          const params = $.parseJSON(results);
-          resolve(params);
+        }, function () {
+          resolve();
         });
       });
 
-      const request3 = new Promise(resolve => {
-        $.post(
-          `${this.url_base}videos_aulas/controle_cursos`, {
-          indice: indice,
-          curso: this.curso,
-          operacao: operacao - 1,
-          codigo_trilha: codigo_trilha
-        }, function (results: response) {
-          const params = $.parseJSON(results);
-          resolve(params);
-        });
+      Promise.all([request1, request2]).then(() =>  {
+        resolve();
       });
-
-      Promise.all([request1, request2, request3]).then((values: Array<response>) => {
-        console.log("Result promises", values);
-        resolve(values);
-      }); 
     });
   }
 }
