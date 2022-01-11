@@ -6,7 +6,7 @@ class Services {
     this.curso = curso;
   }
 
-  public finalizaProva() {
+  public finalizaProva(formDOM: HTMLFormElement) {
     // 2 é errado e 1 acertou!!
     // $.ajax(
     //   {
@@ -19,16 +19,23 @@ class Services {
     //       console.log(data);
     //     }
     // });
-    // $.ajax({
-    //     url: 'https://painel.umentor.com.br/painel_candidato/videos_aulas/gravar_teste',
-    //     data: new FormData(document.querySelector("#form_video_aula_testes")),
-    //     contentType: false,
-    //     processData: false,
-    //     type: 'POST',
-    //     success: function(data){
-    //         console.log(data);
-    //     }
-    // });
+    return new Promise((resolve, reject) => {
+      $.ajax(
+        {
+          url: 'https://painel.umentor.com.br/painel_candidato/videos_aulas/gravar_teste',
+          data: new FormData(formDOM),
+          contentType: false,
+          processData: false,
+          type: 'POST',
+          success: function(){
+            resolve();
+          },
+          erro: function() {
+            reject();
+          }
+        }
+      );
+    })
   }
 
   public finalizarModulo(nivelModulo: number): Promise<void> {

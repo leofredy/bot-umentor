@@ -96,6 +96,23 @@ class App {
     this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid")!;
   }
 
+  private getIdCursoAtual() {
+    const urlCurrent = window.location.href;
+    const posicaoAnteriro = urlCurrent.split("/").indexOf("ver");
+    const idCurso = urlCurrent.split("/")[posicaoAnteriro + 1];
+
+    return idCurso
+  }
+
+  private validaPaginaAvaliacao() {
+    let paginaDeAvaliacao = false;
+    if (window.location.search === `?tes=${this.getIdCursoAtual}`) {
+      paginaDeAvaliacao = true;
+    }
+
+    return paginaDeAvaliacao;
+  }
+
   private getNivelModuloDOM(value: string) {
     const nivelModulo:number = this.select.listModuloDOM.findIndex(modulo => modulo.innerText.trim() === value);
     return nivelModulo;
@@ -151,6 +168,25 @@ class App {
     eventTarget.checked = false;
   }
 
+  private async makeProva() {
+    const formDOM = (document.querySelector("#form_video_aula_testes") as HTMLFormElement);
+    if (this.validaPaginaAvaliacao()) {
+      if (formDOM) {
+        try {
+          await this.api.finalizaProva(formDOM);
+
+        } catch(error) {
+          alert("Error ao terminar a prova");
+        }
+
+      } else {
+        alert("Você deve concluir todos os módulos para realizar a prova!");
+      }
+    } else {
+      
+    }
+  }
+
   private selectChange(value: string) {
     this.selectValue = value;
   }
@@ -162,6 +198,7 @@ class App {
       const toggleName = eventTarget.getAttribute("id");
       switch(toggleName) {
         case "toggleFazerProva": 
+          this.makeProva();
           break;
         case "toggleModulos":
           this.makeModule(eventTarget);
