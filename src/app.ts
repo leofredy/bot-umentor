@@ -147,7 +147,7 @@ class App {
       } else {
         for (let index = 0; index < this.select.listModuloDOM.length - 3; index++) {
           const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
-          console.log("INDEX: ", index);
+          console.log("INDEX: ", index, this.select.listModuloDOM.length, this.select.listModuloDOM);
           if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {
             try {
               await this.api.finalizarModulo(index);
