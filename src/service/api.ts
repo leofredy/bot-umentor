@@ -54,11 +54,11 @@ class Services {
           console.log("PARAMS", params);
           resolve();
         }).fail(function(data) {
-          console.log("DONE REQUEST", data)
+          reject();
         });
       });
 
-      const request2 = new Promise(resolve => {
+      const request2 = new Promise((resolve, reject) => {
         $.post(
           `${this.url_base}videos_aulas/controle_cursos`, {
           indice: indice,
@@ -68,13 +68,17 @@ class Services {
         }, function () {
           resolve();
         }).fail(function(data) {
-          console.log("DONE REQUEST2", data)
+          reject();
         });
       });
 
-      Promise.all([request1, request2]).then(() => {
-        resolve();
-      }); 
+      Promise.all([request1, request2])
+        .then(() => {
+          resolve();
+        })
+        .catch(() => {
+          reject();
+        }); 
     });
   }
 }
