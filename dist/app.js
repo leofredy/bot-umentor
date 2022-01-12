@@ -152,7 +152,7 @@ class App {
                                 this.select.finishModulo();
                             }
                             catch (error) {
-                                alert(`Erro ao finalizar módulo: ${this.select.valueOptions[index]}`);
+                                alert(`Erro ao finalizar módulo: ${index}`);
                                 this.showLoading(false);
                             }
                         }
