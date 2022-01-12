@@ -61,7 +61,7 @@ class Services {
           `${this.url_base}videos_aulas/controle_cursos`, {
           indice: indice,
           curso: this.curso,
-          operacao: operacao > 1 ? 1 : 2,
+          operacao: 2,
           codigo_trilha: codigo_trilha
         }, function () {
           resolve();
