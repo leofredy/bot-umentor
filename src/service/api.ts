@@ -49,7 +49,9 @@ class Services {
           curso: this.curso,
           operacao: 1,
           codigo_trilha: codigo_trilha
-        }, function () {
+        }, function (results) {
+          const params = $.parseJSON(results);
+          console.log("PARAMS", params);
           resolve();
         });
       });
