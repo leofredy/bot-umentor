@@ -158,7 +158,7 @@ class App {
 
               try {
                 await this.api.finalizarModulo(index);
-
+                this.select.finishModulo();
               } catch(error) {
                 alert(`Erro ao finalizar módulo, erro na nova tentativa!: ${index}`);
               }

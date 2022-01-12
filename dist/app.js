@@ -155,6 +155,7 @@ class App {
                                 alert(`Erro ao finalizar módulo, error de request... Será iniciado uma nova tentativa.: ${index}`);
                                 try {
                                     yield this.api.finalizarModulo(index);
+                                    this.select.finishModulo();
                                 }
                                 catch (error) {
                                     alert(`Erro ao finalizar módulo, erro na nova tentativa!: ${index}`);
