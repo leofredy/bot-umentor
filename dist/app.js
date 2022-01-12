@@ -152,7 +152,13 @@ class App {
                                 this.select.finishModulo();
                             }
                             catch (error) {
-                                alert(`Erro ao finalizar módulo: ${index}`);
+                                alert(`Erro ao finalizar módulo, error de request... Será iniciado uma nova tentativa.: ${index}`);
+                                try {
+                                    yield this.api.finalizarModulo(index);
+                                }
+                                catch (error) {
+                                    alert(`Erro ao finalizar módulo, erro na nova tentativa!: ${index}`);
+                                }
                                 this.showLoading(false);
                             }
                         }
