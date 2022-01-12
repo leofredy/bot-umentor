@@ -46,6 +46,8 @@ class Services {
                     const params = $.parseJSON(results);
                     console.log("PARAMS", params);
                     resolve();
+                }).done(function (data) {
+                    console.log("DONE REQUEST", data);
                 });
             });
             const request2 = new Promise(resolve => {
@@ -56,6 +58,8 @@ class Services {
                     codigo_trilha: codigo_trilha
                 }, function () {
                     resolve();
+                }).done(function (data) {
+                    console.log("DONE REQUEST2", data);
                 });
             });
             Promise.all([request1, request2]).then(() => {
