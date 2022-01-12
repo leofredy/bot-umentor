@@ -135,9 +135,11 @@ class App {
                         yield this.api.finalizarModulo(nivelModuloDOM);
                         this.addCheckModulo(nivelModuloDOM);
                         this.select.finishModulo();
+                        this.showLoading(false);
                     }
                     catch (err) {
                         alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
+                        this.showLoading(false);
                     }
                 }
                 else {
@@ -149,15 +151,16 @@ class App {
                                 yield this.api.finalizarModulo(index);
                                 this.addCheckModulo(index);
                                 this.select.finishModulo();
+                                this.showLoading(false);
                             }
                             catch (error) {
                                 alert(`Erro ao finalizar módulo: ${this.select.valueOptions[index]}`);
+                                this.showLoading(false);
                             }
                         }
                     }
                     console.log("OPTIONS", this.select.valueOptions, this.select.listModuloDOM);
                 }
-                this.showLoading(false);
             }
             else {
                 alert("Selecione um módulo!");
