@@ -49,10 +49,6 @@ class Services {
           curso: this.curso,
           operacao: 1,
           codigo_trilha: codigo_trilha
-        }, function (results) {
-          const params = $.parseJSON(results);
-          console.log("PARAMS", params);
-          resolve();
         }).fail(function(data) {
           reject();
         });
@@ -65,8 +61,6 @@ class Services {
           curso: this.curso,
           operacao: 2,
           codigo_trilha: codigo_trilha
-        }, function () {
-          resolve();
         }).fail(function(data) {
           reject();
         });
