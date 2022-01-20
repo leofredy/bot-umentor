@@ -49,6 +49,8 @@ class Services {
           curso: this.curso,
           operacao: 1,
           codigo_trilha: codigo_trilha
+        }).success(function() {
+          resolve();
         }).fail(function(data) {
           reject();
         });
@@ -61,7 +63,10 @@ class Services {
           curso: this.curso,
           operacao: 2,
           codigo_trilha: codigo_trilha
-        }).fail(function(data) {
+        }).success(function() {
+          resolve();
+        })
+        .fail(function() {
           reject();
         });
       });
