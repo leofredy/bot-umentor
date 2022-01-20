@@ -149,21 +149,21 @@ class App {
           const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
           console.log("INDEX: ", index, this.select.listModuloDOM.length, this.select.listModuloDOM);
           if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {
-            try {
+            // try {
               await this.api.finalizarModulo(index);
-              this.addCheckModulo(index);
-              this.select.finishModulo();
-            } catch(error) {
-              alert(`Erro ao finalizar módulo, error de request... Será iniciado uma nova tentativa.: ${index}`);
+              // this.addCheckModulo(index);
+              // this.select.finishModulo();
+            // } catch(error) {
+            //   alert(`Erro ao finalizar módulo, error de request... Será iniciado uma nova tentativa.: ${index}`);
 
-              try {
-                await this.api.finalizarModulo(index);
-                this.select.finishModulo();
-              } catch(error) {
-                alert(`Erro ao finalizar módulo, erro na nova tentativa!: ${index}`);
-              }
-              this.showLoading(false);
-            }
+            //   try {
+            //     await this.api.finalizarModulo(index);
+            //     // this.select.finishModulo();
+            //   } catch(error) {
+            //     alert(`Erro ao finalizar módulo, erro na nova tentativa!: ${index}`);
+            //   }
+            //   this.showLoading(false);
+            // }
           }
         }
         console.log("OPTIONS", this.select.valueOptions, this.select.listModuloDOM);
