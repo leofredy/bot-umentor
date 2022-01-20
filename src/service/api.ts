@@ -49,7 +49,7 @@ class Services {
           curso: this.curso,
           operacao: 1,
           codigo_trilha: codigo_trilha
-        }).success(function() {
+        }).done(function() {
           resolve();
         }).fail(function(data) {
           reject();
@@ -63,7 +63,7 @@ class Services {
           curso: this.curso,
           operacao: 2,
           codigo_trilha: codigo_trilha
-        }).success(function() {
+        }).done(function() {
           resolve();
         })
         .fail(function() {
