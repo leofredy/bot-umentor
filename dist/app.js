@@ -138,35 +138,18 @@ class App {
                 this.showLoading(true);
                 if (this.selectValue !== "Todos os módulos") {
                     const nivelModuloDOM = this.getNivelModuloDOM(this.selectValue);
-                    try {
-                        yield this.api.finalizarModulo(nivelModuloDOM);
-                        this.addCheckModulo(nivelModuloDOM);
-                        this.select.finishModulo();
-                    }
-                    catch (err) {
-                        alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
-                        this.showLoading(false);
-                    }
+                    yield this.api.finalizarModulo(nivelModuloDOM);
+                    this.addCheckModulo(nivelModuloDOM);
+                    this.select.finishModulo();
+                    this.showLoading(false);
                 }
                 else {
                     for (let index = 0; index < this.getLastModulo(); index++) {
                         const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
                         if (checkSVG.getAttribute("class").split(" ").indexOf("text-danger") !== -1) {
-                            // try {
-                            console.log(index, this.select.listModuloDOM.length, "last: ", this.getLastModulo());
                             yield this.api.finalizarModulo(index);
-                            // this.addCheckModulo(index);
-                            // this.select.finishModulo();
-                            // } catch(error) {
-                            //   alert(`Erro ao finalizar módulo, error de request... Será iniciado uma nova tentativa.: ${index}`);
-                            //   try {
-                            //     await this.api.finalizarModulo(index);
-                            //     // this.select.finishModulo();
-                            //   } catch(error) {
-                            //     alert(`Erro ao finalizar módulo, erro na nova tentativa!: ${index}`);
-                            //   }
-                            //   this.showLoading(false);
-                            // }
+                            this.addCheckModulo(index);
+                            this.select.finishModulo();
                         }
                     }
                 }
