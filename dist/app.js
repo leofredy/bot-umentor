@@ -186,6 +186,9 @@ class App {
     }
     responderForm(listRespostas) {
         const formData = new FormData();
+        formData.append("codigo_trilha", document.querySelector("[name=codigo_trilha]").value);
+        formData.append("f_curso", document.querySelector("#f_curso").value);
+        formData.append("f_curso_nome", document.querySelector("#f_curso_nome").value);
         if (listRespostas) {
             listRespostas.forEach((respostaReq, index) => {
                 console.log("*** SEGUNDA REQUEST ***");

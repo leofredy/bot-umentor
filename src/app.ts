@@ -203,6 +203,10 @@ class App {
   private responderForm(listRespostas?: Array<respostaReq>): FormData {
     const formData = new FormData();
 
+    formData.append("codigo_trilha", (document.querySelector("[name=codigo_trilha]")! as HTMLInputElement).value);
+    formData.append("f_curso", (document.querySelector("#f_curso")! as HTMLInputElement).value);
+    formData.append("f_curso_nome", (document.querySelector("#f_curso_nome")! as HTMLInputElement).value)
+
     if (listRespostas) {
       listRespostas.forEach((respostaReq, index) => {
         console.log("*** SEGUNDA REQUEST ***");
