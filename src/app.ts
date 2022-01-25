@@ -144,14 +144,7 @@ class App {
         this.addCheckModulo(nivelModuloDOM);
         this.select.finishModulo();
       } else {
-        for (let index = 0; index < this.getLastModulo(); index++) {
-          const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
-          if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {
-            await this.api.finalizarModulo(index);
-            this.addCheckModulo(index);
-            this.select.finishModulo();
-          }
-        }
+        await this.makeAllModulosVideos();
       }
 
       this.showLoading(false);
@@ -160,6 +153,17 @@ class App {
     }
 
     eventTarget.checked = false;
+  }
+
+  private async makeAllModulosVideos() {
+    for (let index = 0; index < this.getLastModulo(); index++) {
+      const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
+      if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {
+        await this.api.finalizarModulo(index);
+        this.addCheckModulo(index);
+        this.select.finishModulo();
+      }
+    }
   }
 
   private async makeProva(arrayPerguntasReq?: Array<respostaReq>) {
@@ -174,6 +178,8 @@ class App {
 
       if (!this.verificaAprovacaoProva(dataProva.array_perguntas)) {
         this.makeProva(dataProva.array_perguntas);
+      } else {
+        this.makeAllModulosVideos();
       }
     } else {
       alert("Você deve estar na página da prova!");

@@ -131,14 +131,7 @@ class App {
                     this.select.finishModulo();
                 }
                 else {
-                    for (let index = 0; index < this.getLastModulo(); index++) {
-                        const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
-                        if (checkSVG.getAttribute("class").split(" ").indexOf("text-danger") !== -1) {
-                            yield this.api.finalizarModulo(index);
-                            this.addCheckModulo(index);
-                            this.select.finishModulo();
-                        }
-                    }
+                    yield this.makeAllModulosVideos();
                 }
                 this.showLoading(false);
             }
@@ -146,6 +139,18 @@ class App {
                 alert("Selecione um módulo!");
             }
             eventTarget.checked = false;
+        });
+    }
+    makeAllModulosVideos() {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (let index = 0; index < this.getLastModulo(); index++) {
+                const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
+                if (checkSVG.getAttribute("class").split(" ").indexOf("text-danger") !== -1) {
+                    yield this.api.finalizarModulo(index);
+                    this.addCheckModulo(index);
+                    this.select.finishModulo();
+                }
+            }
         });
     }
     makeProva(arrayPerguntasReq) {
@@ -159,6 +164,9 @@ class App {
                 const dataProva = yield this.api.finalizaProva(formData);
                 if (!this.verificaAprovacaoProva(dataProva.array_perguntas)) {
                     this.makeProva(dataProva.array_perguntas);
+                }
+                else {
+                    this.makeAllModulosVideos();
                 }
             }
             else {
