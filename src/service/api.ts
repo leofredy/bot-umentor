@@ -16,7 +16,6 @@ class Services {
     //     processData: false,
     //     type: 'POST',
     //     success: function(data){
-    //       console.log(data);
     //     }
     // });
     return new Promise((resolve, reject) => {

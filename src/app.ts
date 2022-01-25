@@ -124,17 +124,14 @@ class App {
     iconeModulo.classList.remove("text-danger");
     iconeModulo.classList.add("fa-check-circle");
     iconeModulo.classList.add("text-success");
-    console.log("iconeModulo: ", iconeModulo);
   }
 
   private async makeModule(eventTarget: HTMLInputElement) {
-    console.log("selectValue", this.selectValue);
     if (this.selectValue) {
       this.showLoading(true);
 
       if (this.selectValue !== "Todos os módulos") {
         const nivelModuloDOM: number = this.getNivelModuloDOM(this.selectValue);
-        console.log("nivel Modulo:", nivelModuloDOM);
         try {
           await this.api.finalizarModulo(nivelModuloDOM);
           this.addCheckModulo(nivelModuloDOM);
@@ -147,9 +144,9 @@ class App {
       } else {
         for (let index = 0; index < this.select.listModuloDOM.length - 3; index++) {
           const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
-          console.log("INDEX: ", index, this.select.listModuloDOM.length, this.select.listModuloDOM);
           if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {
             // try {
+              console.log(index, this.select.listModuloDOM.length);
               await this.api.finalizarModulo(index);
               // this.addCheckModulo(index);
               // this.select.finishModulo();
@@ -166,7 +163,6 @@ class App {
             // }
           }
         }
-        console.log("OPTIONS", this.select.valueOptions, this.select.listModuloDOM);
       }
 
       this.showLoading(false);
