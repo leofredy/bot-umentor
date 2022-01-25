@@ -188,6 +188,7 @@ class App {
         const formData = new FormData();
         if (listRespostas) {
             listRespostas.forEach((respostaReq, index) => {
+                console.log("*** SEGUNDA REQUEST ***");
                 if (respostaReq.acerto === 2 || respostaReq.acerto === "2") { // ERROU
                     this.perguntasRespostasProva.forEach(perguntaRespostaForm => {
                         if (parseInt(perguntaRespostaForm.inputPergunta.value) === parseInt(respostaReq.pergunta)) {
@@ -199,6 +200,7 @@ class App {
                                     break;
                                 }
                             }
+                            console.log("ERROU: ", "[", lastIndexRespostaForm, "]", perguntaRespostaForm.respostas);
                             formData.append(perguntaRespostaForm.respostas[lastIndexRespostaForm].getAttribute("name"), perguntaRespostaForm.respostas[lastIndexRespostaForm].value);
                         }
                     });
