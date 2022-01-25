@@ -172,10 +172,13 @@ class App {
     let perguntaResposta: PerguntaResposta;
     const perguntasRespostas: Array<PerguntaResposta> = [];
 
-   [...formDOM.querySelectorAll("input")].forEach((input, index) => {
+   [...formDOM.querySelectorAll("input")].forEach((input) => {
      if(input.getAttribute("name") === "f_pergunta[]") {
-      perguntaResposta.indexPergunta = indexPergunta;
-      perguntaResposta.inputPergunta = input;
+      perguntaResposta = {
+        indexPergunta: indexPergunta,
+        inputPergunta: input,
+        respostas: []
+      }
       perguntasRespostas.push(perguntaResposta);
       indexPergunta++;
      } else if (input.getAttribute("id") === "f_respostas_") {
