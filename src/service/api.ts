@@ -1,3 +1,18 @@
+type resposta = {
+  acerto: number,
+  pergunta: String,
+  resposta: String
+};
+type dataProva =  {
+  array_perguntas: Array<resposta>,
+  curso: String,
+  curso_nome: String,
+  msg: String,
+  result: Boolean,
+  resultado: String,
+  trilha: String,
+};
+
 class Services {
   private url_base: string = "https://painel.umentor.com.br/painel_candidato/";
   private curso: number;
@@ -6,7 +21,7 @@ class Services {
     this.curso = curso;
   }
 
-  public finalizaProva(formDOM: HTMLFormElement) {
+  public finalizaProva(formDOM: HTMLFormElement): Promise<dataProva> {
     // 2 é errado e 1 acertou!!
     // $.ajax(
     //   {
@@ -26,8 +41,8 @@ class Services {
           contentType: false,
           processData: false,
           type: 'POST',
-          success: function(){
-            resolve();
+          success: function(data: string){
+            resolve(JSON.parse(data));
           },
           erro: function() {
             reject();

@@ -1,6 +1,12 @@
 import Select from "./scripts/select.js";
 import Services from "./service/api.js";
 
+type PerguntaResposta = {
+  indexPergunta: number,
+  inputPergunta: HTMLInputElement,
+  respostas: Array<HTMLInputElement>
+}
+
 class App {
   private template: string = "";
   private containerApp: HTMLDivElement = document.createElement("div")!;
@@ -96,23 +102,6 @@ class App {
     this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid")!;
   }
 
-  private getIdCursoAtual() {
-    const urlCurrent = window.location.href;
-    const posicaoAnteriro = urlCurrent.split("/").indexOf("ver");
-    const idCurso = urlCurrent.split("/")[posicaoAnteriro + 1];
-
-    return idCurso
-  }
-
-  private validaPaginaAvaliacao() {
-    let paginaDeAvaliacao = false;
-    if (window.location.search === `?tes=${this.getIdCursoAtual}`) {
-      paginaDeAvaliacao = true;
-    }
-
-    return paginaDeAvaliacao;
-  }
-
   private getLastModulo(): number {
     let index = 0
     for (index; index < this.select.listModuloDOM.length; index++) {
@@ -144,17 +133,16 @@ class App {
 
       if (this.selectValue !== "Todos os módulos") {
         const nivelModuloDOM: number = this.getNivelModuloDOM(this.selectValue);
-          await this.api.finalizarModulo(nivelModuloDOM);
-          this.addCheckModulo(nivelModuloDOM);
-          this.select.finishModulo();
-          this.showLoading(false);
+        await this.api.finalizarModulo(nivelModuloDOM);
+        this.addCheckModulo(nivelModuloDOM);
+        this.select.finishModulo();
       } else {
         for (let index = 0; index < this.getLastModulo(); index++) {
           const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
           if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {
-              await this.api.finalizarModulo(index);
-              this.addCheckModulo(index);
-              this.select.finishModulo();
+            await this.api.finalizarModulo(index);
+            this.addCheckModulo(index);
+            this.select.finishModulo();
           }
         }
       }
@@ -169,21 +157,37 @@ class App {
 
   private async makeProva() {
     const formDOM = (document.querySelector("#form_video_aula_testes") as HTMLFormElement);
-    if (this.validaPaginaAvaliacao()) {
-      if (formDOM) {
-        try {
-          await this.api.finalizaProva(formDOM);
+    const perguntasRespostas = this.handlePerguntaResposta(formDOM);
+    console.log(perguntasRespostas);
+    // if (formDOM) {
+    //   const dataProva = await this.api.finalizaProva(formDOM);
+    //   dataProva.array_perguntas
+    // } else {
+    //   alert("Você deve estar na página da prova!");
+    // }
+  }
 
-        } catch(error) {
-          alert("Error ao terminar a prova");
-        }
+  private handlePerguntaResposta(formDOM: HTMLFormElement): Array<PerguntaResposta> {
+    let indexPergunta = 0;
+    let perguntaResposta: PerguntaResposta;
+    const perguntasRespostas: Array<PerguntaResposta> = [];
 
-      } else {
-        alert("Você deve concluir todos os módulos para realizar a prova!");
-      }
-    } else {
-      
-    }
+   [...formDOM.querySelectorAll("input")].forEach((input, index) => {
+     if(input.getAttribute("name") === "f_pergunta[]") {
+      perguntaResposta.indexPergunta = indexPergunta;
+      perguntaResposta.inputPergunta = input;
+      perguntasRespostas.push(perguntaResposta);
+      indexPergunta++;
+     } else if (input.getAttribute("id") === "f_respostas_") {
+      perguntasRespostas[indexPergunta].respostas.push(input);
+     }
+   });
+
+   return perguntasRespostas;
+  }
+
+  private responderForm() {
+
   }
 
   private selectChange(value: string) {

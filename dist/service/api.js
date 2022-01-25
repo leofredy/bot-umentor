@@ -22,8 +22,8 @@ class Services {
                 contentType: false,
                 processData: false,
                 type: 'POST',
-                success: function () {
-                    resolve();
+                success: function (data) {
+                    resolve(JSON.parse(data));
                 },
                 erro: function () {
                     reject();

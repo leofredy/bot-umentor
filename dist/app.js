@@ -98,19 +98,6 @@ class App {
         videoDOM.muted = false;
         this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid");
     }
-    getIdCursoAtual() {
-        const urlCurrent = window.location.href;
-        const posicaoAnteriro = urlCurrent.split("/").indexOf("ver");
-        const idCurso = urlCurrent.split("/")[posicaoAnteriro + 1];
-        return idCurso;
-    }
-    validaPaginaAvaliacao() {
-        let paginaDeAvaliacao = false;
-        if (window.location.search === `?tes=${this.getIdCursoAtual}`) {
-            paginaDeAvaliacao = true;
-        }
-        return paginaDeAvaliacao;
-    }
     getLastModulo() {
         let index = 0;
         for (index; index < this.select.listModuloDOM.length; index++) {
@@ -141,7 +128,6 @@ class App {
                     yield this.api.finalizarModulo(nivelModuloDOM);
                     this.addCheckModulo(nivelModuloDOM);
                     this.select.finishModulo();
-                    this.showLoading(false);
                 }
                 else {
                     for (let index = 0; index < this.getLastModulo(); index++) {
@@ -164,22 +150,34 @@ class App {
     makeProva() {
         return __awaiter(this, void 0, void 0, function* () {
             const formDOM = document.querySelector("#form_video_aula_testes");
-            if (this.validaPaginaAvaliacao()) {
-                if (formDOM) {
-                    try {
-                        yield this.api.finalizaProva(formDOM);
-                    }
-                    catch (error) {
-                        alert("Error ao terminar a prova");
-                    }
-                }
-                else {
-                    alert("Você deve concluir todos os módulos para realizar a prova!");
-                }
+            const perguntasRespostas = this.handlePerguntaResposta(formDOM);
+            console.log(perguntasRespostas);
+            // if (formDOM) {
+            //   const dataProva = await this.api.finalizaProva(formDOM);
+            //   dataProva.array_perguntas
+            // } else {
+            //   alert("Você deve estar na página da prova!");
+            // }
+        });
+    }
+    handlePerguntaResposta(formDOM) {
+        let indexPergunta = 0;
+        let perguntaResposta;
+        const perguntasRespostas = [];
+        [...formDOM.querySelectorAll("input")].forEach((input, index) => {
+            if (input.getAttribute("name") === "f_pergunta[]") {
+                perguntaResposta.indexPergunta = indexPergunta;
+                perguntaResposta.inputPergunta = input;
+                perguntasRespostas.push(perguntaResposta);
+                indexPergunta++;
             }
-            else {
+            else if (input.getAttribute("id") === "f_respostas_") {
+                perguntasRespostas[indexPergunta].respostas.push(input);
             }
         });
+        return perguntasRespostas;
+    }
+    responderForm() {
     }
     selectChange(value) {
         this.selectValue = value;
