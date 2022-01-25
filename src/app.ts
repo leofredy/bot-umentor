@@ -224,7 +224,7 @@ class App {
                   break;
                 }
               }
-              formData.append(perguntaRespostaForm.respostas[lastIndexRespostaForm].getAttribute("name")!, perguntaRespostaForm.respostas[lastIndexRespostaForm].value);
+              formData.append(perguntaRespostaForm.respostas[lastIndexRespostaForm + 1].getAttribute("name")!, perguntaRespostaForm.respostas[lastIndexRespostaForm + 1].value);
             }
           });
         } else { // ACERTOU
