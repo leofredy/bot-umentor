@@ -164,7 +164,7 @@ class App {
         let indexPergunta = 0;
         let perguntaResposta;
         const perguntasRespostas = [];
-        [...formDOM.querySelectorAll("input")].forEach((input) => {
+        [...formDOM.querySelectorAll("input")].forEach((input, index) => {
             if (input.getAttribute("name") === "f_pergunta[]") {
                 perguntaResposta = {
                     indexPergunta: indexPergunta,
@@ -175,7 +175,7 @@ class App {
                 indexPergunta++;
             }
             else if (input.getAttribute("id") === "f_respostas_") {
-                perguntasRespostas[indexPergunta].respostas.push(input);
+                perguntasRespostas[indexPergunta - 1].respostas.push(input);
             }
         });
         return perguntasRespostas;
