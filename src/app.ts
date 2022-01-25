@@ -162,18 +162,18 @@ class App {
     eventTarget.checked = false;
   }
 
-  private async makeProva() {
+  private async makeProva(arrayPerguntasReq?: Array<respostaReq>) {
     const formDOM = (document.querySelector("#form_video_aula_testes") as HTMLFormElement);
     if (formDOM) {
       if (!this.perguntasRespostasProva.length) {
         this.handlePerguntaResposta(formDOM);
       }
 
-      const formData = this.responderForm();
+      const formData = this.responderForm(arrayPerguntasReq);
       const dataProva = await this.api.finalizaProva(formData);
 
       if (!this.verificaAprovacaoProva(dataProva.array_perguntas)) {
-        this.makeProva();
+        this.makeProva(dataProva.array_perguntas);
       }
     } else {
       alert("Você deve estar na página da prova!");

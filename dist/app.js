@@ -148,17 +148,17 @@ class App {
             eventTarget.checked = false;
         });
     }
-    makeProva() {
+    makeProva(arrayPerguntasReq) {
         return __awaiter(this, void 0, void 0, function* () {
             const formDOM = document.querySelector("#form_video_aula_testes");
             if (formDOM) {
                 if (!this.perguntasRespostasProva.length) {
                     this.handlePerguntaResposta(formDOM);
                 }
-                const formData = this.responderForm();
+                const formData = this.responderForm(arrayPerguntasReq);
                 const dataProva = yield this.api.finalizaProva(formData);
                 if (!this.verificaAprovacaoProva(dataProva.array_perguntas)) {
-                    this.makeProva();
+                    this.makeProva(dataProva.array_perguntas);
                 }
             }
             else {
