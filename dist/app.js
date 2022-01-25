@@ -164,6 +164,7 @@ class App {
                     for (let index = 0; index < this.getLastModulo(); index++) {
                         yield this.api.finalizarModulo(index);
                     }
+                    window.location.reload();
                 }
             }
             else {

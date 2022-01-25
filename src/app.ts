@@ -178,6 +178,7 @@ class App {
         for (let index = 0; index < this.getLastModulo(); index++) {
           await this.api.finalizarModulo(index);
         }
+        window.location.reload();
       }
     } else {
       alert("Você deve estar na página da prova!");
