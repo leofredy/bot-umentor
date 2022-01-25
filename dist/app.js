@@ -131,7 +131,14 @@ class App {
                     this.select.finishModulo();
                 }
                 else {
-                    yield this.makeAllModulosVideos();
+                    for (let index = 0; index < this.getLastModulo(); index++) {
+                        const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
+                        if (checkSVG.getAttribute("class").split(" ").indexOf("text-danger") !== -1) {
+                            yield this.api.finalizarModulo(index);
+                            this.addCheckModulo(index);
+                            this.select.finishModulo();
+                        }
+                    }
                 }
                 this.showLoading(false);
             }
@@ -139,18 +146,6 @@ class App {
                 alert("Selecione um módulo!");
             }
             eventTarget.checked = false;
-        });
-    }
-    makeAllModulosVideos() {
-        return __awaiter(this, void 0, void 0, function* () {
-            for (let index = 0; index < this.getLastModulo(); index++) {
-                const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
-                if (checkSVG.getAttribute("class").split(" ").indexOf("text-danger") !== -1) {
-                    yield this.api.finalizarModulo(index);
-                    this.addCheckModulo(index);
-                    this.select.finishModulo();
-                }
-            }
         });
     }
     makeProva(arrayPerguntasReq) {
@@ -166,7 +161,9 @@ class App {
                     this.makeProva(dataProva.array_perguntas);
                 }
                 else {
-                    this.makeAllModulosVideos();
+                    for (let index = 0; index < this.getLastModulo(); index++) {
+                        yield this.api.finalizarModulo(index);
+                    }
                 }
             }
             else {
