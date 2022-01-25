@@ -199,7 +199,6 @@ class App {
         formData.append("f_curso_nome", document.querySelector("#f_curso_nome").value);
         if (listRespostas) {
             listRespostas.forEach((respostaReq, index) => {
-                console.log("*** SEGUNDA REQUEST ***");
                 if (respostaReq.acerto === 2 || respostaReq.acerto === "2") { // ERROU
                     this.perguntasRespostasProva.forEach(perguntaRespostaForm => {
                         if (parseInt(perguntaRespostaForm.inputPergunta.value) === parseInt(respostaReq.pergunta)) {
@@ -207,7 +206,6 @@ class App {
                             let lastIndexRespostaForm = 0;
                             for (let lastRespostaForm = 0; lastRespostaForm < perguntaRespostaForm.respostas.length; lastRespostaForm++) {
                                 if (parseInt(perguntaRespostaForm.respostas[lastRespostaForm].value) === parseInt(respostaReq.resposta)) {
-                                    console.log("IGUAAAL!!");
                                     lastIndexRespostaForm = lastRespostaForm;
                                     break;
                                 }
@@ -223,7 +221,6 @@ class App {
             });
         }
         else {
-            console.log("*** PRIMEIRA REQUEST ***");
             this.perguntasRespostasProva.forEach(perguntaResposta => {
                 formData.append("f_pergunta[]", perguntaResposta.inputPergunta.value);
                 formData.append(perguntaResposta.respostas[0].getAttribute("name"), perguntaResposta.respostas[0].value);
