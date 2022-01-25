@@ -1,11 +1,17 @@
 import Select from "./scripts/select.js";
 import Services from "./service/api.js";
 
-type PerguntaResposta = {
+type PerguntaRespostaDOM = {
   indexPergunta: number,
   inputPergunta: HTMLInputElement,
   respostas: Array<HTMLInputElement>
 }
+
+type respostaReq = {
+  acerto: number | string,
+  pergunta: string,
+  resposta: string
+};
 
 class App {
   private template: string = "";
@@ -15,6 +21,7 @@ class App {
   private selectTemplate: string;
   private selectValue: string = "";
   private api: Services;
+  private perguntasRespostasProva: Array<PerguntaRespostaDOM> = [];
 
 
   constructor(curso:number) {
@@ -157,20 +164,25 @@ class App {
 
   private async makeProva() {
     const formDOM = (document.querySelector("#form_video_aula_testes") as HTMLFormElement);
-    const perguntasRespostas = this.handlePerguntaResposta(formDOM);
-    console.log(perguntasRespostas);
-    // if (formDOM) {
-    //   const dataProva = await this.api.finalizaProva(formDOM);
-    //   dataProva.array_perguntas
-    // } else {
-    //   alert("Você deve estar na página da prova!");
-    // }
+    if (formDOM) {
+      if (!this.perguntasRespostasProva.length) {
+        this.handlePerguntaResposta(formDOM);
+      }
+
+      const formData = this.responderForm();
+      const dataProva = await this.api.finalizaProva(formData);
+
+      if (!this.verificaAprovacaoProva(dataProva.array_perguntas)) {
+        this.makeProva();
+      }
+    } else {
+      alert("Você deve estar na página da prova!");
+    }
   }
 
-  private handlePerguntaResposta(formDOM: HTMLFormElement): Array<PerguntaResposta> {
+  private handlePerguntaResposta(formDOM: HTMLFormElement) {
     let indexPergunta = 0;
-    let perguntaResposta: PerguntaResposta;
-    const perguntasRespostas: Array<PerguntaResposta> = [];
+    let perguntaResposta: PerguntaRespostaDOM;
 
    [...formDOM.querySelectorAll("input")].forEach((input, index) => {
      if(input.getAttribute("name") === "f_pergunta[]") {
@@ -179,19 +191,70 @@ class App {
         inputPergunta: input,
         respostas: []
       }
-      perguntasRespostas.push(perguntaResposta);
+      this.perguntasRespostasProva.push(perguntaResposta);
 
       indexPergunta++;
      } else if (input.getAttribute("id") === "f_respostas_") {
-      perguntasRespostas[indexPergunta - 1].respostas.push(input);
+      this.perguntasRespostasProva[indexPergunta - 1].respostas.push(input);
      }
    });
-
-   return perguntasRespostas;
   }
 
-  private responderForm() {
+  private responderForm(listRespostas?: Array<respostaReq>): FormData {
+    const formData = new FormData();
 
+    if (listRespostas) {
+      listRespostas.forEach((respostaReq, index) => {
+        if (respostaReq.acerto === 2 || respostaReq.acerto === "2") { // ERROU
+          this.perguntasRespostasProva.forEach(perguntaRespostaForm => {
+            if (parseInt(perguntaRespostaForm.inputPergunta.value) === parseInt(respostaReq.pergunta)) {
+              formData.append("f_pergunta[]", perguntaRespostaForm.inputPergunta.value);
+
+              let lastIndexRespostaForm = 0;
+
+              for (let lastRespostaForm = 0; lastRespostaForm < perguntaRespostaForm.respostas.length; lastRespostaForm++) {
+                if (parseInt(perguntaRespostaForm.respostas[lastRespostaForm].value) === parseInt(respostaReq.resposta)) {
+                  lastIndexRespostaForm = lastRespostaForm;
+                  break;
+                }
+              }
+
+              formData.append(perguntaRespostaForm.respostas[lastIndexRespostaForm].getAttribute("name")!, perguntaRespostaForm.respostas[lastIndexRespostaForm].value);
+            }
+          });
+        } else { // ACERTOU
+          formData.append("f_pergunta[]", respostaReq.pergunta);
+          formData.append(`f_respostas_${index}[]`, respostaReq.resposta);
+        }
+      });      
+    } else {
+      this.perguntasRespostasProva.forEach(perguntaResposta => {
+        formData.append("f_pergunta[]", perguntaResposta.inputPergunta.value);
+        formData.append(perguntaResposta.respostas[0].getAttribute("name")!, perguntaResposta.respostas[0].value);
+      });
+    }
+
+    return formData;
+  }
+
+  private verificaAprovacaoProva(listRespostaReq: Array<respostaReq>) {
+    //80% é aprovado;
+    let estaAprovado = false;
+    let numeroAcertos = 0;
+
+    for (let indexRespostaReq = 0; indexRespostaReq < listRespostaReq.length; indexRespostaReq++) {
+      if (listRespostaReq[indexRespostaReq].acerto === 1 || listRespostaReq[indexRespostaReq].acerto === "1") {
+        numeroAcertos++;
+      }
+    }
+
+    const minimoDeAcertos = (this.perguntasRespostasProva.length * 80) / 100;
+
+    if (numeroAcertos >= minimoDeAcertos) {
+      estaAprovado = true;
+    }
+
+    return estaAprovado;
   }
 
   private selectChange(value: string) {

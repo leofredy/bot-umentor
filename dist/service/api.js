@@ -3,7 +3,7 @@ class Services {
         this.url_base = "https://painel.umentor.com.br/painel_candidato/";
         this.curso = curso;
     }
-    finalizaProva(formDOM) {
+    finalizaProva(formData) {
         // 2 é errado e 1 acertou!!
         // $.ajax(
         //   {
@@ -18,7 +18,7 @@ class Services {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: 'https://painel.umentor.com.br/painel_candidato/videos_aulas/gravar_teste',
-                data: new FormData(formDOM),
+                data: formData,
                 contentType: false,
                 processData: false,
                 type: 'POST',

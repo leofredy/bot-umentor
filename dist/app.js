@@ -15,6 +15,7 @@ class App {
         this.containerApp = document.createElement("div");
         this.loaderApp = document.createElement("div");
         this.selectValue = "";
+        this.perguntasRespostasProva = [];
         this.bindEvents();
         this.api = new Services(curso);
         this.containerApp.setAttribute("id", "appTonDoid");
@@ -150,20 +151,24 @@ class App {
     makeProva() {
         return __awaiter(this, void 0, void 0, function* () {
             const formDOM = document.querySelector("#form_video_aula_testes");
-            const perguntasRespostas = this.handlePerguntaResposta(formDOM);
-            console.log(perguntasRespostas);
-            // if (formDOM) {
-            //   const dataProva = await this.api.finalizaProva(formDOM);
-            //   dataProva.array_perguntas
-            // } else {
-            //   alert("Você deve estar na página da prova!");
-            // }
+            if (formDOM) {
+                if (!this.perguntasRespostasProva.length) {
+                    this.handlePerguntaResposta(formDOM);
+                }
+                const formData = this.responderForm();
+                const dataProva = yield this.api.finalizaProva(formData);
+                if (!this.verificaAprovacaoProva(dataProva.array_perguntas)) {
+                    this.makeProva();
+                }
+            }
+            else {
+                alert("Você deve estar na página da prova!");
+            }
         });
     }
     handlePerguntaResposta(formDOM) {
         let indexPergunta = 0;
         let perguntaResposta;
-        const perguntasRespostas = [];
         [...formDOM.querySelectorAll("input")].forEach((input, index) => {
             if (input.getAttribute("name") === "f_pergunta[]") {
                 perguntaResposta = {
@@ -171,16 +176,61 @@ class App {
                     inputPergunta: input,
                     respostas: []
                 };
-                perguntasRespostas.push(perguntaResposta);
+                this.perguntasRespostasProva.push(perguntaResposta);
                 indexPergunta++;
             }
             else if (input.getAttribute("id") === "f_respostas_") {
-                perguntasRespostas[indexPergunta - 1].respostas.push(input);
+                this.perguntasRespostasProva[indexPergunta - 1].respostas.push(input);
             }
         });
-        return perguntasRespostas;
     }
-    responderForm() {
+    responderForm(listRespostas) {
+        const formData = new FormData();
+        if (listRespostas) {
+            listRespostas.forEach((respostaReq, index) => {
+                if (respostaReq.acerto === 2 || respostaReq.acerto === "2") { // ERROU
+                    this.perguntasRespostasProva.forEach(perguntaRespostaForm => {
+                        if (parseInt(perguntaRespostaForm.inputPergunta.value) === parseInt(respostaReq.pergunta)) {
+                            formData.append("f_pergunta[]", perguntaRespostaForm.inputPergunta.value);
+                            let lastIndexRespostaForm = 0;
+                            for (let lastRespostaForm = 0; lastRespostaForm < perguntaRespostaForm.respostas.length; lastRespostaForm++) {
+                                if (parseInt(perguntaRespostaForm.respostas[lastRespostaForm].value) === parseInt(respostaReq.resposta)) {
+                                    lastIndexRespostaForm = lastRespostaForm;
+                                    break;
+                                }
+                            }
+                            formData.append(perguntaRespostaForm.respostas[lastIndexRespostaForm].getAttribute("name"), perguntaRespostaForm.respostas[lastIndexRespostaForm].value);
+                        }
+                    });
+                }
+                else { // ACERTOU
+                    formData.append("f_pergunta[]", respostaReq.pergunta);
+                    formData.append(`f_respostas_${index}[]`, respostaReq.resposta);
+                }
+            });
+        }
+        else {
+            this.perguntasRespostasProva.forEach(perguntaResposta => {
+                formData.append("f_pergunta[]", perguntaResposta.inputPergunta.value);
+                formData.append(perguntaResposta.respostas[0].getAttribute("name"), perguntaResposta.respostas[0].value);
+            });
+        }
+        return formData;
+    }
+    verificaAprovacaoProva(listRespostaReq) {
+        //80% é aprovado;
+        let estaAprovado = false;
+        let numeroAcertos = 0;
+        for (let indexRespostaReq = 0; indexRespostaReq < listRespostaReq.length; indexRespostaReq++) {
+            if (listRespostaReq[indexRespostaReq].acerto === 1 || listRespostaReq[indexRespostaReq].acerto === "1") {
+                numeroAcertos++;
+            }
+        }
+        const minimoDeAcertos = (this.perguntasRespostasProva.length * 80) / 100;
+        if (numeroAcertos >= minimoDeAcertos) {
+            estaAprovado = true;
+        }
+        return estaAprovado;
     }
     selectChange(value) {
         this.selectValue = value;

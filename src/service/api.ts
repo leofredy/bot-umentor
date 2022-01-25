@@ -1,16 +1,16 @@
 type resposta = {
-  acerto: number,
-  pergunta: String,
-  resposta: String
+  acerto: number | string,
+  pergunta: string,
+  resposta: string
 };
 type dataProva =  {
   array_perguntas: Array<resposta>,
-  curso: String,
-  curso_nome: String,
-  msg: String,
+  curso: string,
+  curso_nome: string,
+  msg: string,
   result: Boolean,
-  resultado: String,
-  trilha: String,
+  resultado: string,
+  trilha: string,
 };
 
 class Services {
@@ -21,7 +21,7 @@ class Services {
     this.curso = curso;
   }
 
-  public finalizaProva(formDOM: HTMLFormElement): Promise<dataProva> {
+  public finalizaProva(formData: FormData): Promise<dataProva> {
     // 2 é errado e 1 acertou!!
     // $.ajax(
     //   {
@@ -37,7 +37,7 @@ class Services {
       $.ajax(
         {
           url: 'https://painel.umentor.com.br/painel_candidato/videos_aulas/gravar_teste',
-          data: new FormData(formDOM),
+          data: formData,
           contentType: false,
           processData: false,
           type: 'POST',
