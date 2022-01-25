@@ -228,7 +228,9 @@ class App {
         }
       });      
     } else {
+      console.log("*** PRIMEIRA REQUEST ***");
       this.perguntasRespostasProva.forEach(perguntaResposta => {
+        console.log("PerguntaResposta", perguntaResposta)
         formData.append("f_pergunta[]", perguntaResposta.inputPergunta.value);
         formData.append(perguntaResposta.respostas[0].getAttribute("name")!, perguntaResposta.respostas[0].value);
       });
