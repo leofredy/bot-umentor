@@ -111,6 +111,16 @@ class App {
         }
         return paginaDeAvaliacao;
     }
+    getLastModulo() {
+        let index = 0;
+        for (index; index < this.select.listModuloDOM.length; index++) {
+            const contentModulo = this.select.listModuloDOM[index].innerText.trim().toLowerCase();
+            if (contentModulo === "informações") {
+                break;
+            }
+        }
+        return index;
+    }
     getNivelModuloDOM(value) {
         const nivelModulo = this.select.listModuloDOM.findIndex(modulo => modulo.innerText.trim() === value);
         return nivelModulo;
@@ -139,11 +149,11 @@ class App {
                     }
                 }
                 else {
-                    for (let index = 0; index < this.select.listModuloDOM.length - 3; index++) {
+                    for (let index = 0; index < this.getLastModulo(); index++) {
                         const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
                         if (checkSVG.getAttribute("class").split(" ").indexOf("text-danger") !== -1) {
                             // try {
-                            console.log(index, this.select.listModuloDOM.length);
+                            console.log(index, this.select.listModuloDOM.length, "last: ", this.getLastModulo());
                             yield this.api.finalizarModulo(index);
                             // this.addCheckModulo(index);
                             // this.select.finishModulo();
