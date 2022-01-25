@@ -196,11 +196,11 @@ class App {
                             let lastIndexRespostaForm = 0;
                             for (let lastRespostaForm = 0; lastRespostaForm < perguntaRespostaForm.respostas.length; lastRespostaForm++) {
                                 if (parseInt(perguntaRespostaForm.respostas[lastRespostaForm].value) === parseInt(respostaReq.resposta)) {
+                                    console.log("IGUAAAL!!");
                                     lastIndexRespostaForm = lastRespostaForm;
                                     break;
                                 }
                             }
-                            console.log("ERROU: ", "[", lastIndexRespostaForm, "]", perguntaRespostaForm.respostas);
                             formData.append(perguntaRespostaForm.respostas[lastIndexRespostaForm].getAttribute("name"), perguntaRespostaForm.respostas[lastIndexRespostaForm].value);
                         }
                     });
@@ -214,8 +214,6 @@ class App {
         else {
             console.log("*** PRIMEIRA REQUEST ***");
             this.perguntasRespostasProva.forEach(perguntaResposta => {
-                console.log("PRIMEIRA: ", perguntaResposta, perguntaResposta.respostas[0].value);
-                console.log("PerguntaResposta", perguntaResposta);
                 formData.append("f_pergunta[]", perguntaResposta.inputPergunta.value);
                 formData.append(perguntaResposta.respostas[0].getAttribute("name"), perguntaResposta.respostas[0].value);
             });
