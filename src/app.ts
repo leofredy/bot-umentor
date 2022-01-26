@@ -140,17 +140,25 @@ class App {
 
       if (this.selectValue !== "Todos os módulos") {
         const nivelModuloDOM: number = this.getNivelModuloDOM(this.selectValue);
-        await this.api.finalizarModulo(nivelModuloDOM);
+        try {
+          await this.api.finalizarModulo(nivelModuloDOM);
+        } catch {
+          this.showLoading(false);
+        }
         this.addCheckModulo(nivelModuloDOM);
         this.select.finishModulo();
       } else {
-        for (let index = 0; index < this.getLastModulo(); index++) {
-          const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
-          if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {
-            await this.api.finalizarModulo(index);
-            this.addCheckModulo(index);
-            this.select.finishModulo();
+        try {
+          for (let index = 0; index < this.getLastModulo(); index++) {
+            const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
+            if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {
+              await this.api.finalizarModulo(index);
+              this.addCheckModulo(index);
+              this.select.finishModulo();
+            }
           }
+        } catch {
+          this.showLoading(false);
         }
       }
 
@@ -165,6 +173,7 @@ class App {
   private async makeProva(arrayPerguntasReq?: Array<respostaReq>) {
     const formDOM = (document.querySelector("#form_video_aula_testes") as HTMLFormElement);
     if (formDOM) {
+      this.showLoading(true);
       if (!this.perguntasRespostasProva.length) {
         this.handlePerguntaResposta(formDOM);
       }
@@ -175,9 +184,17 @@ class App {
       if (!this.verificaAprovacaoProva(dataProva.array_perguntas)) {
         this.makeProva(dataProva.array_perguntas);
       } else {
-        for (let index = 0; index < this.getLastModulo(); index++) {
-          await this.api.finalizarModulo(index);
-        }
+        
+          for (let index = 0; index < this.getLastModulo(); index++) {
+            this.showLoading(true);
+            try {
+              await this.api.finalizarModulo(index);
+            } catch {
+              this.showLoading(false);
+            }
+          }
+      
+        this.showLoading(false);
         window.location.reload();
       }
     } else {

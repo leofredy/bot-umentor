@@ -126,18 +126,28 @@ class App {
                 this.showLoading(true);
                 if (this.selectValue !== "Todos os módulos") {
                     const nivelModuloDOM = this.getNivelModuloDOM(this.selectValue);
-                    yield this.api.finalizarModulo(nivelModuloDOM);
+                    try {
+                        yield this.api.finalizarModulo(nivelModuloDOM);
+                    }
+                    catch (_a) {
+                        this.showLoading(false);
+                    }
                     this.addCheckModulo(nivelModuloDOM);
                     this.select.finishModulo();
                 }
                 else {
-                    for (let index = 0; index < this.getLastModulo(); index++) {
-                        const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
-                        if (checkSVG.getAttribute("class").split(" ").indexOf("text-danger") !== -1) {
-                            yield this.api.finalizarModulo(index);
-                            this.addCheckModulo(index);
-                            this.select.finishModulo();
+                    try {
+                        for (let index = 0; index < this.getLastModulo(); index++) {
+                            const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
+                            if (checkSVG.getAttribute("class").split(" ").indexOf("text-danger") !== -1) {
+                                yield this.api.finalizarModulo(index);
+                                this.addCheckModulo(index);
+                                this.select.finishModulo();
+                            }
                         }
+                    }
+                    catch (_b) {
+                        this.showLoading(false);
                     }
                 }
                 this.showLoading(false);
@@ -152,6 +162,7 @@ class App {
         return __awaiter(this, void 0, void 0, function* () {
             const formDOM = document.querySelector("#form_video_aula_testes");
             if (formDOM) {
+                this.showLoading(true);
                 if (!this.perguntasRespostasProva.length) {
                     this.handlePerguntaResposta(formDOM);
                 }
@@ -162,8 +173,15 @@ class App {
                 }
                 else {
                     for (let index = 0; index < this.getLastModulo(); index++) {
-                        yield this.api.finalizarModulo(index);
+                        this.showLoading(true);
+                        try {
+                            yield this.api.finalizarModulo(index);
+                        }
+                        catch (_a) {
+                            this.showLoading(false);
+                        }
                     }
+                    this.showLoading(false);
                     window.location.reload();
                 }
             }
