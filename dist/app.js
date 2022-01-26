@@ -136,19 +136,23 @@ class App {
                     this.select.finishModulo();
                 }
                 else {
-                    try {
-                        for (let index = 0; index < this.getLastModulo(); index++) {
-                            const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
-                            if (checkSVG.getAttribute("class").split(" ").indexOf("text-danger") !== -1) {
+                    for (let index = 0; index < this.getLastModulo(); index++) {
+                        const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
+                        if (checkSVG.getAttribute("class").split(" ").indexOf("text-danger") !== -1) {
+                            try {
+                                this.showLoading(true);
                                 yield this.api.finalizarModulo(index);
-                                this.addCheckModulo(index);
-                                this.select.finishModulo();
                             }
+                            catch (_b) {
+                                this.showLoading(false);
+                            }
+                            this.addCheckModulo(index);
+                            this.select.finishModulo();
                         }
                     }
-                    catch (_b) {
-                        this.showLoading(false);
-                    }
+                    alert("Parabéns você assistiu todos os videos!! Agora você será redirecionado para a página de avaliação, boa sorte.");
+                    const idCurso = window.location.href.split("/")[6];
+                    window.location.href = `${window.location.href}?tes=${idCurso}`;
                 }
                 this.showLoading(false);
             }
