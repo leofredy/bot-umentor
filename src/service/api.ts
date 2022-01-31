@@ -1,5 +1,5 @@
 class Services {
-  private url_base: string = "https://painel.umentor.com.br/painel_candidato/";
+  private url_base: string = window.location.href.split("videos_aulas")[0];
   private curso: number;
 
   constructor(curso:number) {

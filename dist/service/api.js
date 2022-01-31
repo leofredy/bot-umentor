@@ -1,6 +1,6 @@
 class Services {
     constructor(curso) {
-        this.url_base = "https://painel.umentor.com.br/painel_candidato/";
+        this.url_base = window.location.href.split("videos_aulas")[0];
         this.curso = curso;
     }
     finalizaProva(formDOM) {
