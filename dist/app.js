@@ -15,6 +15,7 @@ class App {
         this.containerApp = document.createElement("div");
         this.loaderApp = document.createElement("div");
         this.selectValue = "";
+        this.perguntasRespostasProva = [];
         this.bindEvents();
         this.api = new Services(curso);
         this.containerApp.setAttribute("id", "appTonDoid");
@@ -98,18 +99,15 @@ class App {
         videoDOM.muted = false;
         this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid");
     }
-    getIdCursoAtual() {
-        const urlCurrent = window.location.href;
-        const posicaoAnteriro = urlCurrent.split("/").indexOf("ver");
-        const idCurso = urlCurrent.split("/")[posicaoAnteriro + 1];
-        return idCurso;
-    }
-    validaPaginaAvaliacao() {
-        let paginaDeAvaliacao = false;
-        if (window.location.search === `?tes=${this.getIdCursoAtual}`) {
-            paginaDeAvaliacao = true;
+    getLastModulo() {
+        let index = 0;
+        for (index; index < this.select.listModuloDOM.length; index++) {
+            const contentModulo = this.select.listModuloDOM[index].innerText.trim().toLowerCase();
+            if (contentModulo === "informações") {
+                break;
+            }
         }
-        return paginaDeAvaliacao;
+        return index;
     }
     getNivelModuloDOM(value) {
         const nivelModulo = this.select.listModuloDOM.findIndex(modulo => modulo.innerText.trim() === value);
@@ -121,50 +119,40 @@ class App {
         iconeModulo.classList.remove("text-danger");
         iconeModulo.classList.add("fa-check-circle");
         iconeModulo.classList.add("text-success");
-        console.log("iconeModulo: ", iconeModulo);
     }
     makeModule(eventTarget) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("selectValue", this.selectValue);
             if (this.selectValue) {
                 this.showLoading(true);
                 if (this.selectValue !== "Todos os módulos") {
                     const nivelModuloDOM = this.getNivelModuloDOM(this.selectValue);
-                    console.log("nivel Modulo:", nivelModuloDOM);
                     try {
                         yield this.api.finalizarModulo(nivelModuloDOM);
-                        this.addCheckModulo(nivelModuloDOM);
-                        this.select.finishModulo();
                     }
-                    catch (err) {
-                        alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
+                    catch (_a) {
                         this.showLoading(false);
                     }
+                    this.addCheckModulo(nivelModuloDOM);
+                    this.select.finishModulo();
                 }
                 else {
-                    for (let index = 0; index < this.select.listModuloDOM.length - 3; index++) {
+                    for (let index = 0; index < this.getLastModulo(); index++) {
                         const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
-                        console.log("INDEX: ", index, this.select.listModuloDOM.length, this.select.listModuloDOM);
                         if (checkSVG.getAttribute("class").split(" ").indexOf("text-danger") !== -1) {
                             try {
+                                this.showLoading(true);
                                 yield this.api.finalizarModulo(index);
-                                this.addCheckModulo(index);
-                                this.select.finishModulo();
                             }
-                            catch (error) {
-                                alert(`Erro ao finalizar módulo, error de request... Será iniciado uma nova tentativa.: ${index}`);
-                                try {
-                                    yield this.api.finalizarModulo(index);
-                                    this.select.finishModulo();
-                                }
-                                catch (error) {
-                                    alert(`Erro ao finalizar módulo, erro na nova tentativa!: ${index}`);
-                                }
+                            catch (_b) {
                                 this.showLoading(false);
                             }
+                            this.addCheckModulo(index);
+                            this.select.finishModulo();
                         }
                     }
-                    console.log("OPTIONS", this.select.valueOptions, this.select.listModuloDOM);
+                    alert("Parabéns você assistiu todos os videos!! Agora você será redirecionado para a página de avaliação, boa sorte.");
+                    const idCurso = window.location.href.split("/")[6];
+                    window.location.href = `${window.location.href}?tes=${idCurso}`;
                 }
                 this.showLoading(false);
             }
@@ -174,25 +162,106 @@ class App {
             eventTarget.checked = false;
         });
     }
-    makeProva() {
+    makeProva(arrayPerguntasReq) {
         return __awaiter(this, void 0, void 0, function* () {
             const formDOM = document.querySelector("#form_video_aula_testes");
-            if (this.validaPaginaAvaliacao()) {
-                if (formDOM) {
-                    try {
-                        yield this.api.finalizaProva(formDOM);
-                    }
-                    catch (error) {
-                        alert("Error ao terminar a prova");
-                    }
+            if (formDOM) {
+                this.showLoading(true);
+                if (!this.perguntasRespostasProva.length) {
+                    this.handlePerguntaResposta(formDOM);
+                }
+                const formData = this.responderForm(arrayPerguntasReq);
+                const dataProva = yield this.api.finalizaProva(formData);
+                if (!this.verificaAprovacaoProva(dataProva.array_perguntas)) {
+                    this.makeProva(dataProva.array_perguntas);
                 }
                 else {
-                    alert("Você deve concluir todos os módulos para realizar a prova!");
+                    for (let index = 0; index < this.getLastModulo(); index++) {
+                        this.showLoading(true);
+                        try {
+                            yield this.api.finalizarModulo(index);
+                        }
+                        catch (_a) {
+                            this.showLoading(false);
+                        }
+                    }
+                    this.showLoading(false);
+                    window.location.reload();
                 }
             }
             else {
+                alert("Você deve estar na página da prova!");
             }
         });
+    }
+    handlePerguntaResposta(formDOM) {
+        let indexPergunta = 0;
+        let perguntaResposta;
+        [...formDOM.querySelectorAll("input")].forEach((input, index) => {
+            if (input.getAttribute("name") === "f_pergunta[]") {
+                perguntaResposta = {
+                    indexPergunta: indexPergunta,
+                    inputPergunta: input,
+                    respostas: []
+                };
+                this.perguntasRespostasProva.push(perguntaResposta);
+                indexPergunta++;
+            }
+            else if (input.getAttribute("id") === "f_respostas_") {
+                this.perguntasRespostasProva[indexPergunta - 1].respostas.push(input);
+            }
+        });
+    }
+    responderForm(listRespostas) {
+        const formData = new FormData();
+        formData.append("codigo_trilha", document.querySelector("[name=codigo_trilha]").value);
+        formData.append("f_curso", document.querySelector("#f_curso").value);
+        formData.append("f_curso_nome", document.querySelector("#f_curso_nome").value);
+        if (listRespostas) {
+            listRespostas.forEach((respostaReq, index) => {
+                if (respostaReq.acerto === 2 || respostaReq.acerto === "2") { // ERROU
+                    this.perguntasRespostasProva.forEach(perguntaRespostaForm => {
+                        if (parseInt(perguntaRespostaForm.inputPergunta.value) === parseInt(respostaReq.pergunta)) {
+                            formData.append("f_pergunta[]", perguntaRespostaForm.inputPergunta.value);
+                            let lastIndexRespostaForm = 0;
+                            for (let lastRespostaForm = 0; lastRespostaForm < perguntaRespostaForm.respostas.length; lastRespostaForm++) {
+                                if (parseInt(perguntaRespostaForm.respostas[lastRespostaForm].value) === parseInt(respostaReq.resposta)) {
+                                    lastIndexRespostaForm = lastRespostaForm;
+                                    break;
+                                }
+                            }
+                            formData.append(perguntaRespostaForm.respostas[lastIndexRespostaForm + 1].getAttribute("name"), perguntaRespostaForm.respostas[lastIndexRespostaForm + 1].value);
+                        }
+                    });
+                }
+                else { // ACERTOU
+                    formData.append("f_pergunta[]", respostaReq.pergunta);
+                    formData.append(`f_respostas_${index}[]`, respostaReq.resposta);
+                }
+            });
+        }
+        else {
+            this.perguntasRespostasProva.forEach(perguntaResposta => {
+                formData.append("f_pergunta[]", perguntaResposta.inputPergunta.value);
+                formData.append(perguntaResposta.respostas[0].getAttribute("name"), perguntaResposta.respostas[0].value);
+            });
+        }
+        return formData;
+    }
+    verificaAprovacaoProva(listRespostaReq) {
+        //80% é aprovado;
+        let estaAprovado = false;
+        let numeroAcertos = 0;
+        for (let indexRespostaReq = 0; indexRespostaReq < listRespostaReq.length; indexRespostaReq++) {
+            if (listRespostaReq[indexRespostaReq].acerto === 1 || listRespostaReq[indexRespostaReq].acerto === "1") {
+                numeroAcertos++;
+            }
+        }
+        const minimoDeAcertos = (this.perguntasRespostasProva.length * 80) / 100;
+        if (numeroAcertos >= minimoDeAcertos) {
+            estaAprovado = true;
+        }
+        return estaAprovado;
     }
     selectChange(value) {
         this.selectValue = value;

@@ -1,3 +1,18 @@
+type resposta = {
+  acerto: number | string,
+  pergunta: string,
+  resposta: string
+};
+type dataProva =  {
+  array_perguntas: Array<resposta>,
+  curso: string,
+  curso_nome: string,
+  msg: string,
+  result: Boolean,
+  resultado: string,
+  trilha: string,
+};
+
 class Services {
   private url_base: string = window.location.href.split("videos_aulas")[0];
   private curso: number;
@@ -6,7 +21,7 @@ class Services {
     this.curso = curso;
   }
 
-  public finalizaProva(formDOM: HTMLFormElement) {
+  public finalizaProva(formData: FormData): Promise<dataProva> {
     // 2 é errado e 1 acertou!!
     // $.ajax(
     //   {
@@ -16,19 +31,18 @@ class Services {
     //     processData: false,
     //     type: 'POST',
     //     success: function(data){
-    //       console.log(data);
     //     }
     // });
     return new Promise((resolve, reject) => {
       $.ajax(
         {
           url: 'https://painel.umentor.com.br/painel_candidato/videos_aulas/gravar_teste',
-          data: new FormData(formDOM),
+          data: formData,
           contentType: false,
           processData: false,
           type: 'POST',
-          success: function(){
-            resolve();
+          success: function(data: string){
+            resolve(JSON.parse(data));
           },
           erro: function() {
             reject();
@@ -49,9 +63,7 @@ class Services {
           curso: this.curso,
           operacao: 1,
           codigo_trilha: codigo_trilha
-        }, function (results) {
-          const params = $.parseJSON(results);
-          console.log("PARAMS", params);
+        }).done(function() {
           resolve();
         }).fail(function(data) {
           reject();
@@ -65,9 +77,10 @@ class Services {
           curso: this.curso,
           operacao: 2,
           codigo_trilha: codigo_trilha
-        }, function () {
+        }).done(function() {
           resolve();
-        }).fail(function(data) {
+        })
+        .fail(function() {
           reject();
         });
       });

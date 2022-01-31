@@ -151,7 +151,6 @@ class Select {
   private mounted() { 
     let optionsTemplate: string = ``;
     this.listModuloDOM.forEach(moduloDOM => {
-      console.log(moduloDOM.children[0].children[1], moduloDOM.children[0], moduloDOM.children[0].children);
       const checkSVG = moduloDOM.children[0].children[1];
       if (checkSVG) {
         if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {

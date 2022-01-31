@@ -3,7 +3,7 @@ class Services {
         this.url_base = window.location.href.split("videos_aulas")[0];
         this.curso = curso;
     }
-    finalizaProva(formDOM) {
+    finalizaProva(formData) {
         // 2 é errado e 1 acertou!!
         // $.ajax(
         //   {
@@ -13,18 +13,17 @@ class Services {
         //     processData: false,
         //     type: 'POST',
         //     success: function(data){
-        //       console.log(data);
         //     }
         // });
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: 'https://painel.umentor.com.br/painel_candidato/videos_aulas/gravar_teste',
-                data: new FormData(formDOM),
+                data: formData,
                 contentType: false,
                 processData: false,
                 type: 'POST',
-                success: function () {
-                    resolve();
+                success: function (data) {
+                    resolve(JSON.parse(data));
                 },
                 erro: function () {
                     reject();
@@ -42,9 +41,7 @@ class Services {
                     curso: this.curso,
                     operacao: 1,
                     codigo_trilha: codigo_trilha
-                }, function (results) {
-                    const params = $.parseJSON(results);
-                    console.log("PARAMS", params);
+                }).done(function () {
                     resolve();
                 }).fail(function (data) {
                     reject();
@@ -56,9 +53,10 @@ class Services {
                     curso: this.curso,
                     operacao: 2,
                     codigo_trilha: codigo_trilha
-                }, function () {
+                }).done(function () {
                     resolve();
-                }).fail(function (data) {
+                })
+                    .fail(function () {
                     reject();
                 });
             });

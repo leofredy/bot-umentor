@@ -1,6 +1,18 @@
 import Select from "./scripts/select.js";
 import Services from "./service/api.js";
 
+type PerguntaRespostaDOM = {
+  indexPergunta: number,
+  inputPergunta: HTMLInputElement,
+  respostas: Array<HTMLInputElement>
+}
+
+type respostaReq = {
+  acerto: number | string,
+  pergunta: string,
+  resposta: string
+};
+
 class App {
   private template: string = "";
   private containerApp: HTMLDivElement = document.createElement("div")!;
@@ -9,6 +21,7 @@ class App {
   private selectTemplate: string;
   private selectValue: string = "";
   private api: Services;
+  private perguntasRespostasProva: Array<PerguntaRespostaDOM> = [];
 
 
   constructor(curso:number) {
@@ -96,21 +109,16 @@ class App {
     this.loaderApp = document.querySelector("#appTonDoid .loaderTonDroid")!;
   }
 
-  private getIdCursoAtual() {
-    const urlCurrent = window.location.href;
-    const posicaoAnteriro = urlCurrent.split("/").indexOf("ver");
-    const idCurso = urlCurrent.split("/")[posicaoAnteriro + 1];
-
-    return idCurso
-  }
-
-  private validaPaginaAvaliacao() {
-    let paginaDeAvaliacao = false;
-    if (window.location.search === `?tes=${this.getIdCursoAtual}`) {
-      paginaDeAvaliacao = true;
+  private getLastModulo(): number {
+    let index = 0
+    for (index; index < this.select.listModuloDOM.length; index++) {
+      const contentModulo = this.select.listModuloDOM[index].innerText.trim().toLowerCase();
+      if (contentModulo === "informações") {
+        break;
+      }
     }
 
-    return paginaDeAvaliacao;
+    return index;
   }
 
   private getNivelModuloDOM(value: string) {
@@ -124,51 +132,39 @@ class App {
     iconeModulo.classList.remove("text-danger");
     iconeModulo.classList.add("fa-check-circle");
     iconeModulo.classList.add("text-success");
-    console.log("iconeModulo: ", iconeModulo);
   }
 
   private async makeModule(eventTarget: HTMLInputElement) {
-    console.log("selectValue", this.selectValue);
     if (this.selectValue) {
       this.showLoading(true);
 
       if (this.selectValue !== "Todos os módulos") {
         const nivelModuloDOM: number = this.getNivelModuloDOM(this.selectValue);
-        console.log("nivel Modulo:", nivelModuloDOM);
         try {
           await this.api.finalizarModulo(nivelModuloDOM);
-          this.addCheckModulo(nivelModuloDOM);
-          this.select.finishModulo();
-        } catch(err) {
-          alert(`Erro ao finalizar módulo: ${JSON.stringify(err)}`);
+        } catch {
           this.showLoading(false);
         }
-        
+        this.addCheckModulo(nivelModuloDOM);
+        this.select.finishModulo();
       } else {
-        for (let index = 0; index < this.select.listModuloDOM.length - 3; index++) {
+        for (let index = 0; index < this.getLastModulo(); index++) {
           const checkSVG = this.select.listModuloDOM[index].children[0].children[1];
-          console.log("INDEX: ", index, this.select.listModuloDOM.length, this.select.listModuloDOM);
           if (checkSVG.getAttribute("class")!.split(" ").indexOf("text-danger") !== -1) {
             try {
+              this.showLoading(true);
               await this.api.finalizarModulo(index);
-              this.addCheckModulo(index);
-              this.select.finishModulo();
-            } catch(error) {
-              alert(`Erro ao finalizar módulo, error de request... Será iniciado uma nova tentativa.: ${index}`);
-
-              try {
-                await this.api.finalizarModulo(index);
-                this.select.finishModulo();
-              } catch(error) {
-                alert(`Erro ao finalizar módulo, erro na nova tentativa!: ${index}`);
-              }
+            } catch {
               this.showLoading(false);
             }
+            this.addCheckModulo(index);
+            this.select.finishModulo();
           }
         }
-        console.log("OPTIONS", this.select.valueOptions, this.select.listModuloDOM);
+        alert("Parabéns você assistiu todos os videos!! Agora você será redirecionado para a página de avaliação, boa sorte.");
+        const idCurso = window.location.href.split("/")[6];
+        window.location.href = `${window.location.href}?tes=${idCurso}`;
       }
-
       this.showLoading(false);
     } else {
       alert("Selecione um módulo!");
@@ -177,23 +173,116 @@ class App {
     eventTarget.checked = false;
   }
 
-  private async makeProva() {
+  private async makeProva(arrayPerguntasReq?: Array<respostaReq>) {
     const formDOM = (document.querySelector("#form_video_aula_testes") as HTMLFormElement);
-    if (this.validaPaginaAvaliacao()) {
-      if (formDOM) {
-        try {
-          await this.api.finalizaProva(formDOM);
+    if (formDOM) {
+      this.showLoading(true);
+      if (!this.perguntasRespostasProva.length) {
+        this.handlePerguntaResposta(formDOM);
+      }
 
-        } catch(error) {
-          alert("Error ao terminar a prova");
-        }
+      const formData = this.responderForm(arrayPerguntasReq);
+      const dataProva = await this.api.finalizaProva(formData);
 
+      if (!this.verificaAprovacaoProva(dataProva.array_perguntas)) {
+        this.makeProva(dataProva.array_perguntas);
       } else {
-        alert("Você deve concluir todos os módulos para realizar a prova!");
+        
+          for (let index = 0; index < this.getLastModulo(); index++) {
+            this.showLoading(true);
+            try {
+              await this.api.finalizarModulo(index);
+            } catch {
+              this.showLoading(false);
+            }
+          }
+      
+        this.showLoading(false);
+        window.location.reload();
       }
     } else {
-      
+      alert("Você deve estar na página da prova!");
     }
+  }
+
+  private handlePerguntaResposta(formDOM: HTMLFormElement) {
+    let indexPergunta = 0;
+    let perguntaResposta: PerguntaRespostaDOM;
+
+   [...formDOM.querySelectorAll("input")].forEach((input, index) => {
+     if(input.getAttribute("name") === "f_pergunta[]") {
+      perguntaResposta = {
+        indexPergunta: indexPergunta,
+        inputPergunta: input,
+        respostas: []
+      }
+      this.perguntasRespostasProva.push(perguntaResposta);
+
+      indexPergunta++;
+     } else if (input.getAttribute("id") === "f_respostas_") {
+      this.perguntasRespostasProva[indexPergunta - 1].respostas.push(input);
+     }
+   });
+  }
+
+  private responderForm(listRespostas?: Array<respostaReq>): FormData {
+    const formData = new FormData();
+
+    formData.append("codigo_trilha", (document.querySelector("[name=codigo_trilha]")! as HTMLInputElement).value);
+    formData.append("f_curso", (document.querySelector("#f_curso")! as HTMLInputElement).value);
+    formData.append("f_curso_nome", (document.querySelector("#f_curso_nome")! as HTMLInputElement).value)
+
+    if (listRespostas) {
+      listRespostas.forEach((respostaReq, index) => {
+        if (respostaReq.acerto === 2 || respostaReq.acerto === "2") { // ERROU
+          this.perguntasRespostasProva.forEach(perguntaRespostaForm => {
+            if (parseInt(perguntaRespostaForm.inputPergunta.value) === parseInt(respostaReq.pergunta)) {
+              formData.append("f_pergunta[]", perguntaRespostaForm.inputPergunta.value);
+
+              let lastIndexRespostaForm = 0;
+
+              for (let lastRespostaForm = 0; lastRespostaForm < perguntaRespostaForm.respostas.length; lastRespostaForm++) {
+                if (parseInt(perguntaRespostaForm.respostas[lastRespostaForm].value) === parseInt(respostaReq.resposta)) {
+                  lastIndexRespostaForm = lastRespostaForm;
+                  break;
+                }
+              }
+              formData.append(perguntaRespostaForm.respostas[lastIndexRespostaForm + 1].getAttribute("name")!, perguntaRespostaForm.respostas[lastIndexRespostaForm + 1].value);
+            }
+          });
+        } else { // ACERTOU
+          formData.append("f_pergunta[]", respostaReq.pergunta);
+          formData.append(`f_respostas_${index}[]`, respostaReq.resposta);
+        }
+      });      
+    } else {
+      this.perguntasRespostasProva.forEach(perguntaResposta => {
+        formData.append("f_pergunta[]", perguntaResposta.inputPergunta.value);
+        formData.append(perguntaResposta.respostas[0].getAttribute("name")!, perguntaResposta.respostas[0].value);
+      });
+    }
+
+    return formData;
+  }
+
+  private verificaAprovacaoProva(listRespostaReq: Array<respostaReq>) {
+    //80% é aprovado;
+    let estaAprovado = false;
+    let numeroAcertos = 0;
+
+    for (let indexRespostaReq = 0; indexRespostaReq < listRespostaReq.length; indexRespostaReq++) {
+      if (listRespostaReq[indexRespostaReq].acerto === 1 || listRespostaReq[indexRespostaReq].acerto === "1") {
+        numeroAcertos++;
+      }
+    }
+
+    const minimoDeAcertos = (this.perguntasRespostasProva.length * 80) / 100;
+
+    if (numeroAcertos >= minimoDeAcertos) {
+      estaAprovado = true;
+    }
+
+    return estaAprovado;
   }
 
   private selectChange(value: string) {
