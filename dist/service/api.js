@@ -17,7 +17,7 @@ class Services {
         // });
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: 'https://painel.umentor.com.br/painel_candidato/videos_aulas/gravar_teste',
+                url: `${this.url_base}videos_aulas/gravar_teste`,
                 data: formData,
                 contentType: false,
                 processData: false,
